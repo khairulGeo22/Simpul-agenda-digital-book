@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- PWA: Konten manifest.json yang di-embed langsung untuk lingkungan preview -->
+    <!-- CATATAN PENTING: Untuk deployment nyata di server web (misalnya di GitHub Pages),
+         pastikan file ikon (icon-192x192.png, icon-512x512.png, icon-512x512-maskable.png)
+         berada di direktori root aplikasi Anda, dan ubah 'src' di bawah menjadi
+         jalur relatif seperti "/icon-192x192.png".
+         URL 'http://googleusercontent.com/file_content/X' ini hanya berlaku di lingkungan pratinjau Canvas. -->
     <script type="application/json" id="manifest-json">
     {
         "name": "SIMPUL",
@@ -18,17 +23,17 @@
         "theme_color": "#4361ee",
         "icons": [
             {
-                "src": "http://googleusercontent.com/file_content/5",
+                "src": "icon-192x192.png",
                 "sizes": "192x192",
                 "type": "image/png"
             },
             {
-                "src": "http://googleusercontent.com/file_content/4",
+                "src": "icon-512x512.png",
                 "sizes": "512x512",
                 "type": "image/png"
             },
             {
-                "src": "http://googleusercontent.com/file_content/3",
+                "src": "icon-512x512-maskable.png",
                 "sizes": "512x512",
                 "type": "image/png",
                 "purpose": "maskable"
@@ -162,17 +167,6 @@
             border-bottom: 2px solid rgba(67, 97, 238, 0.1);
         }
         
-        /* Intro Section - Now inside the modal */
-        .intro-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            /* Removed margin-bottom as it's now inside modal */
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            max-width: 900px; /* Batasi lebar intro section di dalam modal */
-            margin: 0 auto; /* Tengah di dalam modal */
-        }
-
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
@@ -195,14 +189,18 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
-            padding: 30px;
+            background: transparent; /* Make modal content background transparent to show futuristic card's background */
+            padding: 0; /* Remove padding from modal-content */
             border-radius: 16px;
-            box-shadow: var(--card-shadow);
+            box-shadow: none; /* Remove shadow from modal-content */
             max-width: 90%;
             width: 900px; /* Max width for the modal content */
             transform: translateY(0);
             transition: transform 0.5s ease, opacity 0.5s ease;
+            display: flex; /* Use flex to center the card inside */
+            justify-content: center;
+            align-items: center;
+            min-height: 100%; /* Ensure it takes full height to center content */
         }
 
         .modal-overlay.hidden-modal .modal-content {
@@ -414,24 +412,25 @@
         .shared-calendar .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px; /* Reduced gap for calendar cells */
-            padding: 15px;
+            gap: 3px; /* Reduced gap for calendar cells */
+            padding: 10px; /* Reduced padding */
             background: white; /* Ensure background is white for calendar grid */
         }
 
         .calendar-day-header {
             text-align: center;
-            padding: 10px;
+            padding: 8px; /* Reduced padding */
             font-weight: bold;
             color: var(--primary);
             background: rgba(var(--primary-rgb, 67, 97, 238), 0.1); /* Light background for day headers */
             border-radius: 5px;
+            font-size: 0.9em; /* Smaller font size */
         }
         
         .calendar-day-cell {
-            padding: 10px;
+            padding: 8px; /* Reduced padding */
             border: 1px solid #eee;
-            min-height: 80px;
+            min-height: 70px; /* Reduced min-height */
             position: relative;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 8px;
@@ -447,18 +446,18 @@
 
         .calendar-day-cell .day-number {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 3px; /* Reduced margin */
             color: var(--primary);
-            font-size: 1.1em;
+            font-size: 1em; /* Adjusted font size */
         }
 
         .calendar-event {
             background: rgba(76, 175, 80, 0.15);
             border-left: 3px solid #4caf50;
-            padding: 5px;
-            margin-bottom: 5px;
+            padding: 4px; /* Reduced padding */
+            margin-bottom: 3px; /* Reduced margin */
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem; /* Reduced font size */
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -471,10 +470,10 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
-            .intro-section {
-                grid-template-columns: 1fr;
+            body {
+                padding: 10px; /* Kurangi padding body pada mobile */
             }
-            
+
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
@@ -484,11 +483,50 @@
             }
             
             .grid-container { /* Adjust grid for smaller screens */
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                grid-template-columns: 1fr; /* Satu kolom pada mobile */
             }
 
             .shared-calendar .calendar-grid { /* Apply to the unified calendar */
                 grid-template-columns: repeat(3, 1fr);
+            }
+
+            /* Sembunyikan detail cuaca dan jadwal shalat secara default pada mobile */
+            .weather-details, .prayer-details {
+                display: none;
+            }
+            .weather-card .card-content, .prayer-card .card-content {
+                padding-top: 0; /* Hapus padding atas jika detail disembunyikan */
+            }
+            .weather-card h2, .prayer-card h2 {
+                margin-bottom: 10px; /* Kurangi margin bawah header */
+            }
+            .weather-card .toggle-button, .prayer-card .toggle-button {
+                display: block; /* Tampilkan tombol toggle */
+                margin-top: 10px;
+                text-align: center;
+            }
+
+            /* Penyesuaian modal untuk mobile */
+            .modal-content {
+                padding: 0; /* No padding */
+                max-width: 95%;
+                width: 100%; /* Take full width on mobile */
+                min-height: 100%; /* Take full height on mobile */
+            }
+            .futuristic-intro-card {
+                padding: 20px;
+                width: 100%; /* Take full width of modal-content */
+                height: 100%; /* Take full height of modal-content */
+                border-radius: 0; /* No border-radius on mobile for full screen effect */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .futuristic-intro-card h2 {
+                font-size: 1.5rem;
+            }
+            .futuristic-intro-card .mode-options {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Even smaller buttons on small mobile */
             }
         }
         
@@ -587,6 +625,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 10px;
+            margin-bottom: 15px; /* Reduced margin */
         }
         
         /* Last Reflection Styling */
@@ -602,13 +641,14 @@
             background: rgba(72, 149, 239, 0.1);
             padding: 12px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* Reduced margin */
             position: relative;
         }
         
         .notes-list {
             list-style: none;
             padding: 0;
+            margin-top: 15px; /* Added margin to separate from button */
         }
         
         .export-textarea {
@@ -629,6 +669,7 @@
             padding: 8px;
             border-radius: 8px;
             border: 1px solid #ddd;
+            margin-bottom: 5px; /* Reduced margin */
         }
         
         .stats-output {
@@ -836,6 +877,19 @@
             --primary-rgb: 183, 28, 28;
         }
 
+        /* New Modes */
+        body.mode-doctor {
+            --mode-gradient: linear-gradient(135deg, #28a745, #20c997);
+            --primary: #1e7e34;
+            --primary-rgb: 30, 126, 52;
+        }
+
+        body.mode-guru {
+            --mode-gradient: linear-gradient(135deg, #6f42c1, #5a2e9b);
+            --primary: #522c8a;
+            --primary-rgb: 82, 44, 138;
+        }
+
         /* Footer Styles */
         .app-footer {
             margin-top: 50px;
@@ -896,29 +950,283 @@
             color: var(--primary);
             margin-bottom: 5px;
         }
+
+        /* Mobile Navigation Bar */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--primary);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 999;
+            display: none; /* Hidden by default, shown on mobile */
+        }
+
+        .mobile-nav button {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-radius: 8px;
+            box-shadow: none; /* Remove button shadow */
+        }
+
+        .mobile-nav button:hover {
+            background: rgba(255,255,255,0.2);
+            transform: none; /* No transform on hover for nav buttons */
+        }
+        .mobile-nav button i {
+            font-size: 1.2rem;
+        }
+
+        /* Show mobile nav on small screens */
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: flex;
+            }
+            body {
+                padding-bottom: 80px; /* Add padding to body to prevent content from being hidden by fixed nav */
+            }
+        }
+
+        /* New Futuristic Intro Card Style */
+        .futuristic-intro-card {
+            /* Soft and futuristic gradient background */
+            background: linear-gradient(135deg, #1e3a8a, #4a0e7e, #8c005b); /* Deep blue to purple to deep pink */
+            backdrop-filter: blur(12px); /* Stronger blur for frosted glass effect */
+            border-radius: 20px;
+            padding: 30px;
+            margin: 0 auto; /* Center the card */
+            max-width: 500px; /* Max width for a compact look */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            /* Enhanced glowing effect */
+            box-shadow: 
+                0 0 20px rgba(100, 149, 237, 0.8), /* Soft blue glow */
+                0 0 40px rgba(138, 43, 226, 0.6), /* Purple glow */
+                0 0 60px rgba(255, 99, 71, 0.4); /* Coral glow */
+            animation: glow-pulse 4s infinite alternate; /* Slower, smoother pulsing glow animation */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+        }
+
+        .futuristic-intro-card h2,
+        .futuristic-intro-card h3,
+        .futuristic-intro-card p {
+            color: rgba(255, 255, 255, 0.95); /* Slightly off-white for softer look */
+            text-shadow: 0 0 8px rgba(255,255,255,0.6); /* Softer text shadow */
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            border-bottom: none;
+            padding-bottom: 0;
+            display: block;
+        }
+        .futuristic-intro-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        .futuristic-intro-card p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+
+        .futuristic-intro-card input {
+            background: rgba(255, 255, 255, 0.1); /* More transparent input */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Softer border */
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-align: center; /* Center placeholder text */
+        }
+        .futuristic-intro-card input::placeholder {
+            color: rgba(255, 255, 255, 0.6); /* Softer placeholder color */
+        }
+        .futuristic-intro-card input:focus {
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2); /* Softer focus glow */
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .futuristic-intro-card .mode-options {
+            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Slightly smaller buttons for more fit */
+        }
+
+        .futuristic-intro-card .mode-options button {
+            background: rgba(255, 255, 255, 0.1); /* Very subtle background */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Softer border */
+            color: rgba(255, 255, 255, 0.9); /* Softer white text */
+            font-weight: normal;
+            font-size: 0.9rem; /* Slightly smaller font */
+            padding: 10px 8px;
+            border-radius: 8px;
+            box-shadow: none;
+            transition: all 0.2s ease;
+        }
+        .futuristic-intro-card .mode-options button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px); /* More pronounced lift on hover */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Subtle shadow on hover */
+        }
+        .futuristic-intro-card .mode-options button.active {
+            background: linear-gradient(45deg, #8A2BE2, #FF1493); /* Vibrant gradient for active mode */
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5), 0 0 25px rgba(138, 43, 226, 0.7); /* Stronger glow for active */
+            transform: translateY(-2px);
+        }
+
+        .futuristic-intro-card button { /* Apply to the "Simpan Nama" button */
+            margin-top: 20px; /* Increased margin-top for separation */
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            background: linear-gradient(45deg, #4895ef, #4361ee); /* Default button gradient */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: none;
+            padding: 12px 22px; /* Slightly adjusted padding */
+            border-radius: 10px; /* Slightly less rounded */
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+        .futuristic-intro-card button:hover {
+            transform: translateY(-4px); /* More lift on hover */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Glow Animation */
+        @keyframes glow-pulse {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(100, 149, 237, 0.8), 
+                    0 0 40px rgba(138, 43, 226, 0.6),
+                    0 0 60px rgba(255, 99, 71, 0.4);
+            }
+            50% {
+                box-shadow: 
+                    0 0 30px rgba(100, 149, 237, 1), 
+                    0 0 50px rgba(138, 43, 226, 0.8),
+                    0 0 70px rgba(255, 99, 71, 0.6);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(100, 149, 237, 0.8), 
+                    0 0 40px rgba(138, 43, 226, 0.6),
+                    0 0 60px rgba(255, 99, 71, 0.4);
+            }
+        }
+
+        /* Financial Support Section */
+        .financial-support {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .financial-support h4 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .payment-methods a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .payment-methods a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .payment-methods i {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        /* Specific payment icons - using Font Awesome for common ones */
+        /* For specific brand icons like OVO, Dana, ShopeePay, you might need custom SVGs or images */
+        /* Here, I'm using generic icons or common alternatives for demonstration */
+        .payment-icon-gopay::before { content: "G"; font-weight: bold; font-size: 2rem; border: 2px solid white; border-radius: 5px; padding: 0 5px; }
+        .payment-icon-ovo::before { content: "OVO"; font-weight: bold; font-size: 1.5rem; }
+        .payment-icon-dana::before { content: "DANA"; font-weight: bold; font-size: 1.5rem; }
+        .payment-icon-shopeepay::before { content: "SP"; font-weight: bold; font-size: 2rem; border: 2px solid white; border-radius: 5px; padding: 0 5px; }
+        .payment-icon-bank::before { content: "\f19c"; font-family: "Font Awesome 5 Free"; font-weight: 900; font-size: 2rem; } /* Bank icon */
+
+
+        /* Adjustments for smaller screens for payment methods */
+        @media (max-width: 480px) {
+            .payment-methods {
+                gap: 10px;
+            }
+            .payment-methods a {
+                font-size: 0.75rem;
+            }
+            .payment-methods i {
+                font-size: 1.5rem;
+            }
+            .payment-icon-gopay::before { font-size: 1.5rem; }
+            .payment-icon-ovo::before { font-size: 1.2rem; }
+            .payment-icon-dana::before { font-size: 1.2rem; }
+            .payment-icon-shopeepay::before { font-size: 1.5rem; }
+            .payment-icon-bank::before { font-size: 1.5rem; }
+        }
+
     </style>
 </head>
 <body class="mode-default">
     <!-- Initial Modal Pop-up -->
     <div class="modal-overlay" id="initialModalOverlay">
         <div class="modal-content">
-            <section class="intro-section" id="introSection">
-                <div class="card floating">
-                    <h2><i class="fas fa-user-edit"></i> Siapa nama Anda?</h2>
+            <div class="futuristic-intro-card">
+                <h2><i class="fas fa-user-circle"></i> Selamat Datang di SIMPUL!</h2>
+                <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 20px; text-shadow: 0 0 5px rgba(255,255,255,0.5);">Silakan isi nama Anda dan pilih mode hidup Anda hari ini.</p>
+                
+                <div class="input-section">
+                    <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 10px; text-shadow: 0 0 5px rgba(255,255,255,0.5);"><i class="fas fa-signature"></i> Siapa nama Anda?</h3>
                     <input type="text" id="inputNama" placeholder="Contoh: Khairul">
                     <button onclick="simpanNama()"><i class="fas fa-save"></i> Simpan Nama</button>
                 </div>
-                <div class="card pulse">
-                    <h2><i class="fas fa-sliders-h"></i> Pilih Mode Hidup Anda</h2>
+
+                <div class="mode-selection-section" style="margin-top: 30px;">
+                    <h3 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 15px; text-shadow: 0 0 5px rgba(255,255,255,0.5);"><i class="fas fa-sliders-h"></i> Pilih Mode Hidup Anda</h3>
                     <div class="mode-options">
                         <button onclick="setMode('muslimah')"><i class="fas fa-female"></i> Muslimah</button>
                         <button onclick="setMode('dosen')"><i class="fas fa-chalkboard-teacher"></i> Dosen</button>
                         <button onclick="setMode('mahasiswa')"><i class="fas fa-graduation-cap"></i> Mahasiswa</button>
                         <button onclick="setMode('freelancer')"><i class="fas fa-laptop-code"></i> Freelancer</button>
                         <button onclick="setMode('pengangguran')"><i class="fas fa-user-clock"></i> Produktif</button>
+                        <button onclick="setMode('doctor')"><i class="fas fa-user-md"></i> Dokter</button>
+                        <button onclick="setMode('guru')"><i class="fas fa-school"></i> Guru</button>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 
@@ -942,7 +1250,7 @@
             <!-- Grid Layout for Main Sections -->
             <div class="grid-container">
                 <!-- Aktivitas Pagi & Harian -->
-                <div class="card">
+                <div class="card" id="aktivitasSection">
                     <h2><i class="fas fa-sun"></i> Aktivitas Pagi & Harian</h2>
                     <div class="checkbox-group" id="aktivitasContainer">
                         <!-- Aktivitas akan diisi berdasarkan mode -->
@@ -958,7 +1266,7 @@
                 </div>
 
                 <!-- Catatan Penting -->
-                <div class="card">
+                <div class="card" id="catatanSection">
                     <h2><i class="fas fa-sticky-note"></i> Catatan Penting & Janji</h2>
                     <input type="text" id="catatanInput" placeholder="Contoh: Bertemu Pak Dodi...">
                     <div class="datetime-inputs">
@@ -976,7 +1284,7 @@
                 </div>
 
                 <!-- Ibadah -->
-                <div class="card">
+                <div class="card" id="ibadahSection">
                     <h2><i class="fas fa-mosque"></i> Ibadah Wajib & Sunnah</h2>
                     <div class="checkbox-group">
                         <label><input type="checkbox" class="prayer-checkbox" data-prayer="shubuh"> <i class="fas fa-praying-hands"></i> Shalat Shubuh</label>
@@ -1001,9 +1309,9 @@
                 </div>
 
                 <!-- Hafalan Harian -->
-                <div class="card">
+                <div class="card" id="hafalanSection">
                     <h2><i class="fas fa-book-quran"></i> Hafalan Hari Ini</h2>
-                    <input type="text" id="hafalanInput" placeholder="Contoh: QS. Al-Mulk 1–5">
+                    <input type="text" id="hafalanInput" placeholder="Contoh: QS. Al-Mulk 1–5" style="margin-bottom: 10px;">
                     
                     <div class="gif-container">
                         <div class="gif-placeholder" id="hafalan3dIconContainer">
@@ -1017,45 +1325,55 @@
                 </div>
 
                 <!-- Refleksi Pagi -->
-                <div class="card">
+                <div class="card" id="refleksiSection">
                     <h2><i class="fas fa-brain"></i> Refleksi Pagi</h2>
                     <textarea id="refleksiInput" placeholder="Apa yang kau syukuri hari ini?" rows="4"></textarea>
                     <button onclick="simpanRefleksi()"><i class="fas fa-cloud-upload-alt"></i> Simpan Refleksi</button>
                     <div id="lastRefleksi" class="last-reflection"></div>
                 </div>
 
-                <!-- Cuaca Harian -->
-                <div class="card">
-                    <h2><i class="fas fa-cloud-sun"></i> Cuaca Harian</h2>
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <i id="weatherIcon" class="fas fa-question-circle" style="font-size: 3rem; color: var(--accent);"></i>
-                        <p id="weatherCondition" style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;">Memuat cuaca...</p>
-                        <p id="locationInfo" style="font-size: 0.9rem; color: #666;">Mencari lokasi...</p>
-                        <p style="font-size: 0.8rem; color: #999; margin-top: 10px;">
-                            <i class="fas fa-info-circle"></i> Data cuaca ini disimulasikan. Untuk cuaca real-time, diperlukan backend.
-                        </p>
+                <!-- Cuaca Harian (Collapsible on Mobile) -->
+                <div class="card weather-card" id="cuacaSection">
+                    <h2 onclick="toggleSection('weather')">
+                        <i class="fas fa-cloud-sun"></i> Cuaca Harian 
+                        <i class="fas fa-chevron-down toggle-icon" id="weatherToggleIcon"></i>
+                    </h2>
+                    <div class="card-content weather-details">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <i id="weatherIcon" class="fas fa-question-circle" style="font-size: 3rem; color: var(--accent);"></i>
+                            <p id="weatherCondition" style="font-size: 1.2rem; font-weight: bold; margin-top: 5px;">Memuat cuaca...</p>
+                            <p id="locationInfo" style="font-size: 0.9rem; color: #666;">Mencari lokasi...</p>
+                            <p style="font-size: 0.8rem; color: #999; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i> Data cuaca ini disimulasikan. Untuk cuaca real-time, diperlukan backend.
+                            </p>
+                        </div>
+                        <button onclick="getWeather()"><i class="fas fa-sync-alt"></i> Perbarui Cuaca</button>
                     </div>
-                    <button onclick="getWeather()"><i class="fas fa-sync-alt"></i> Perbarui Cuaca</button>
                 </div>
 
-                <!-- Jadwal Shalat Harian -->
-                <div class="card">
-                    <h2><i class="fas fa-mosque"></i> Jadwal Shalat Harian</h2>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
-                        <i class="fas fa-map-marker-alt"></i> Untuk Wilayah Banda Aceh (Simulasi)
-                    </p>
-                    <div class="prayer-times-grid" id="prayerTimesDisplay">
-                        <!-- Waktu shalat akan diisi di sini oleh JavaScript -->
+                <!-- Jadwal Shalat Harian (Collapsible on Mobile) -->
+                <div class="card prayer-card" id="jadwalShalatSection">
+                    <h2 onclick="toggleSection('prayer')">
+                        <i class="fas fa-mosque"></i> Jadwal Shalat Harian
+                        <i class="fas fa-chevron-down toggle-icon" id="prayerToggleIcon"></i>
+                    </h2>
+                    <div class="card-content prayer-details">
+                        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
+                            <i class="fas fa-map-marker-alt"></i> Untuk Wilayah Banda Aceh (Simulasi)
+                        </p>
+                        <div class="prayer-times-grid" id="prayerTimesDisplay">
+                            <!-- Waktu shalat akan diisi di sini oleh JavaScript -->
+                        </div>
+                        <p style="font-size: 0.8rem; color: #999; margin-top: 10px;">
+                            <i class="fas fa-info-circle"></i> Waktu shalat ini adalah simulasi. Untuk akurasi, diperlukan integrasi API backend.
+                        </p>
                     </div>
-                    <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">
-                        <i class="fas fa-info-circle"></i> Waktu shalat ini adalah simulasi. Untuk akurasi, diperlukan integrasi API backend.
-                    </p>
                 </div>
             </div>
         </section>
 
         <!-- Kolaborasi Pasangan/Partner -->
-        <section class="collaboration-section" id="collaborationSection">
+        <section class="collaboration-section" id="kolaborasiSection">
             <div class="collab-card">
                 <div class="collab-header">
                     <h2><i class="fas fa-people-arrows"></i> Kolaborasi Pasangan/Partner</h2>
@@ -1145,7 +1463,7 @@
         </section>
 
         <!-- Navigasi Tab (Konten Bergantian) -->
-        <section class="tab-section">
+        <section class="tab-section" id="dataSection">
             <div class="tab-buttons">
                 <button onclick="showTab('tracker')" class="tab-button active" data-tab="tracker"><i class="fas fa-book"></i> Tracker</button>
                 <button onclick="showTab('statistik')" class="tab-button" data-tab="statistik"><i class="fas fa-chart-bar"></i> Statistik</button>
@@ -1179,7 +1497,7 @@
 
                 <div id="tab-kalender" class="tab-item">
                     <!-- Kalender ini sekarang akan mengarahkan ke kalender kolaboratif utama -->
-                    <p>Lihat kalender kolaboratif Anda di bagian <a href="#collaborationSection" onclick="scrollToCollaboration()">Kolaborasi Pasangan/Partner</a>.</p>
+                    <p>Lihat kalender kolaboratif Anda di bagian <a href="#kolaborasiSection" onclick="scrollToSection('kolaborasiSection')">Kolaborasi Pasangan/Partner</a>.</p>
                 </div>
 
                 <div id="tab-ekspor" class="tab-item">
@@ -1191,11 +1509,81 @@
         </section>
     </div>
 
+    <!-- Mobile Navigation Bar (Fixed at bottom, only visible on mobile) -->
+    <nav class="mobile-nav">
+        <button onclick="scrollToSection('aktivitasSection')">
+            <i class="fas fa-sun"></i>
+            <span>Aktivitas</span>
+        </button>
+        <button onclick="scrollToSection('catatanSection')">
+            <i class="fas fa-sticky-note"></i>
+            <span>Catatan</span>
+        </button>
+        <button onclick="scrollToSection('ibadahSection')">
+            <i class="fas fa-mosque"></i>
+            <span>Ibadah</span>
+        </button>
+        <button onclick="scrollToSection('hafalanSection')">
+            <i class="fas fa-book-quran"></i>
+            <span>Hafalan</span>
+        </button>
+        <button onclick="scrollToSection('refleksiSection')">
+            <i class="fas fa-brain"></i>
+            <span>Refleksi</span>
+        </button>
+        <button onclick="scrollToSection('cuacaSection')">
+            <i class="fas fa-cloud-sun"></i>
+            <span>Cuaca</span>
+        </button>
+        <button onclick="scrollToSection('jadwalShalatSection')">
+            <i class="fas fa-clock"></i>
+            <span>Shalat</span>
+        </button>
+        <button onclick="scrollToSection('kolaborasiSection')">
+            <i class="fas fa-people-arrows"></i>
+            <span>Kolaborasi</span>
+        </button>
+        <button onclick="scrollToSection('dataSection')">
+            <i class="fas fa-chart-pie"></i>
+            <span>Data</span>
+        </button>
+    </nav>
+
     <!-- Footer -->
     <footer class="app-footer">
         <p>Produk oleh CV. Simpul Project Academy</p>
         <p>Desain oleh <a href="mailto:m.khairul311089@gmail.com">Muhammad Khairul, S.Pd, M.Pd</a></p>
         <p>Hubungi: <a href="https://wa.me/6285262608383" target="_blank">+62 852-6260-8383</a></p>
+        
+        <div class="financial-support">
+            <h4>Dukungan Finansial untuk Pengembangan SIMPUL</h4>
+            <p>Bantu kami terus berinovasi dan menyediakan fitur terbaik!</p>
+            <div class="payment-methods">
+                <a href="https://link.dana.id/qr/085262608383" target="_blank">
+                    <span class="payment-icon-dana"></span>
+                    <span>DANA</span>
+                </a>
+                <a href="https://link.ovo.id/qr/085262608383" target="_blank">
+                    <span class="payment-icon-ovo"></span>
+                    <span>OVO</span>
+                </a>
+                <a href="https://link.gopay.id/qr/085262608383" target="_blank">
+                    <span class="payment-icon-gopay"></span>
+                    <span>GoPay</span>
+                </a>
+                <a href="https://link.shopeepay.id/qr/085262608383" target="_blank">
+                    <span class="payment-icon-shopeepay"></span>
+                    <span>ShopeePay</span>
+                </a>
+                <a href="https://wa.me/6285262608383?text=Saya%20ingin%20berdonasi%20melalui%20transfer%20bank." target="_blank">
+                    <i class="fas fa-university payment-icon-bank"></i>
+                    <span>Transfer Bank Lain</span>
+                </a>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">
+                Semua donasi akan digunakan untuk operasional dan pengembangan aplikasi. Terima kasih!
+            </p>
+        </div>
     </footer>
 
     <script>
@@ -1254,6 +1642,24 @@
                 { id: 'skill', text: 'Belajar Skill Baru', icon: 'fas fa-laptop-code' },
                 { id: 'networking', text: 'Networking / Kenalan Baru', icon: 'fas fa-handshake' },
                 { id: 'volunteer', text: 'Kegiatan Sosial / Volunteer', icon: 'fas fa-people-carry' }
+            ],
+            doctor: [
+                { id: 'periksa-pagi', text: 'Periksa Pasien Pagi', icon: 'fas fa-stethoscope' },
+                { id: 'ronde-bangsal', text: 'Ronde Bangsal', icon: 'fas fa-hospital-user' },
+                { id: 'bedah-medis', text: 'Bedah/Tindakan Medis', icon: 'fas fa-hand-holding-medical' },
+                { id: 'konsultasi-online', text: 'Konsultasi Online', icon: 'fas fa-laptop-medical' },
+                { id: 'penelitian-medis', text: 'Penelitian Medis', icon: 'fas fa-microscope' },
+                { id: 'edukasi-kesehatan', text: 'Edukasi Kesehatan', icon: 'fas fa-notes-medical' },
+                { id: 'laporan-medis', text: 'Tulis Laporan Medis', icon: 'fas fa-file-medical' }
+            ],
+            guru: [
+                { id: 'persiapan-materi', text: 'Persiapan Materi Ajar', icon: 'fas fa-book-open' },
+                { id: 'mengajar-kelas', text: 'Mengajar Kelas Pagi', icon: 'fas fa-chalkboard-teacher' },
+                { id: 'koreksi-tugas', text: 'Koreksi Tugas', icon: 'fas fa-edit' },
+                { id: 'bimbingan-siswa', text: 'Bimbingan Siswa', icon: 'fas fa-user-graduate' },
+                { id: 'rapat-guru', text: 'Rapat Guru', icon: 'fas fa-users' },
+                { id: 'pengembangan-diri', text: 'Pengembangan Diri (Pelatihan)', icon: 'fas fa-certificate' },
+                { id: 'evaluasi-pembelajaran', text: 'Evaluasi Pembelajaran', icon: 'fas fa-chart-line' }
             ]
         };
 
@@ -1263,8 +1669,6 @@
 
         // Mendapatkan referensi ke elemen modal dan intro-section
         const initialModalOverlay = document.getElementById('initialModalOverlay');
-        const introSection = document.getElementById('introSection'); // Ini sekarang adalah konten di dalam modal
-        const collaborationSection = document.getElementById('collaborationSection'); // Untuk scroll ke kalender
 
         /**
          * Helper function to save data to localStorage
@@ -1351,6 +1755,8 @@
                 mahasiswa: "Tuntutlah ilmu sampai ke negeri Cina. Semangat belajar!",
                 freelancer: "Kreativitas tanpa batas, rezeki dari arah tak terduga. Teruslah berinovasi!",
                 pengangguran: "Setiap usaha adalah langkah menuju keberhasilan. Jangan menyerah, terus produktif!",
+                doctor: "Dedikasi Anda menyelamatkan nyawa. Teruslah berjuang untuk kesehatan!",
+                guru: "Mendidik adalah investasi masa depan. Inspirasi Anda tak ternilai!",
                 default: "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya."
             };
             motivasiText.textContent = motivasi[mode] || motivasi.default;
@@ -1597,7 +2003,7 @@
 
             if (tabId === 'kalender') {
                 // Gulir ke bagian kalender kolaboratif utama
-                collaborationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.getElementById('kolaborasiSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 // Tandai tombol kalender sebagai aktif
                 document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
             } else {
@@ -1607,10 +2013,14 @@
         }
 
         /**
-         * Fungsi untuk menggulir ke bagian kolaborasi (digunakan oleh link di tab kalender).
+         * Fungsi untuk menggulir ke bagian tertentu.
+         * @param {string} sectionId - ID dari elemen bagian yang akan digulir.
          */
-        function scrollToCollaboration() {
-            collaborationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
 
@@ -1987,7 +2397,7 @@
                     },
                     (error) => {
                         // Log the full error object for better debugging
-                        console.error("Error getting location:", error); 
+                        console.error("Error getting location:", error.message || error.code || error); 
                         let errorMessage = "Tidak dapat mengambil lokasi Anda.";
                         switch(error.code) {
                             case error.PERMISSION_DENIED:
@@ -2057,6 +2467,33 @@
         }
         // --- END PRAYER TIMES FEATURE ---
 
+        /**
+         * Toggles the visibility of a section's details (for weather and prayer times).
+         * @param {string} sectionType - 'weather' or 'prayer'.
+         */
+        function toggleSection(sectionType) {
+            let detailsElement, toggleIconElement;
+            if (sectionType === 'weather') {
+                detailsElement = document.querySelector('.weather-details');
+                toggleIconElement = document.getElementById('weatherToggleIcon');
+            } else if (sectionType === 'prayer') {
+                detailsElement = document.querySelector('.prayer-details');
+                toggleIconElement = document.getElementById('prayerToggleIcon');
+            }
+
+            if (detailsElement && toggleIconElement) {
+                if (detailsElement.style.display === 'none' || detailsElement.style.display === '') {
+                    detailsElement.style.display = 'block';
+                    toggleIconElement.classList.remove('fa-chevron-down');
+                    toggleIconElement.classList.add('fa-chevron-up');
+                } else {
+                    detailsElement.style.display = 'none';
+                    toggleIconElement.classList.remove('fa-chevron-up');
+                    toggleIconElement.classList.add('fa-chevron-down');
+                }
+            }
+        }
+
 
         // Inisialisasi saat halaman dimuat
         document.addEventListener('DOMContentLoaded', () => {
@@ -2099,58 +2536,15 @@
             showTab('tracker'); // Tampilkan tab tracker secara default
             renderCalendar(); // Render kalender utama saat dimuat
 
-            // PWA: Mendaftarkan Service Worker
-            // Catatan: Pendaftaran Service Worker dan manifest.json menggunakan Blob URL
-            // ini adalah workaround untuk lingkungan pratinjau (preview) dan mungkin
-            // tidak berfungsi sepenuhnya seperti pada deployment server sungguhan.
-            // Untuk deployment, pastikan manifest.json dan service-worker.js ada di root.
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    // Get manifest content from the script tag
-                    const manifestScript = document.getElementById('manifest-json');
-                    const manifestContent = manifestScript ? manifestScript.textContent : '{}';
-                    const manifestBlob = new Blob([manifestContent], { type: 'application/json' });
-                    const manifestUrl = URL.createObjectURL(manifestBlob);
+            // Muat cuaca dan jadwal shalat saat aplikasi dimuat
+            getWeather();
+            displayPrayerTimes(); // Tampilkan jadwal shalat
 
-                    // Create a minimal service worker script as a Blob URL
-                    const serviceWorkerScriptContent = `
-                        self.addEventListener('install', (event) => {
-                            console.log('Service Worker: Installed.');
-                            self.skipWaiting();
-                        });
-
-                        self.addEventListener('activate', (event) => {
-                            console.log('Service Worker: Activated.');
-                            event.waitUntil(clients.claim());
-                        });
-
-                        self.addEventListener('fetch', (event) => {
-                            // This service worker doesn't do much, just logs fetches.
-                            // In a real PWA, you'd implement caching strategies here.
-                            console.log('Service Worker: Fetching', event.request.url);
-                        });
-                    `;
-                    const swBlob = new Blob([serviceWorkerScriptContent], { type: 'application/javascript' });
-                    const swUrl = URL.createObjectURL(swBlob);
-
-                    // Register the service worker
-                    navigator.serviceWorker.register(swUrl)
-                        .then(registration => {
-                            console.log('Service Worker terdaftar dengan scope:', registration.scope);
-                            // Set the manifest link dynamically
-                            const linkManifest = document.createElement('link');
-                            linkManifest.rel = 'manifest';
-                            linkManifest.href = manifestUrl;
-                            document.head.appendChild(linkManifest);
-                        })
-                        .catch(error => {
-                            console.error('Pendaftaran Service Worker gagal:', error);
-                            // Clean up the object URL if registration fails
-                            URL.revokeObjectURL(swUrl);
-                            URL.revokeObjectURL(manifestUrl);
-                        });
-                });
-            }
+            // Inisialisasi dan mulai animasi 3D ikon setelah DOM dimuat
+            initHafalan3DIcon();
+            animateHafalan3DIcon();
+            initAktivitas3DIcon(); // Inisialisasi ikon 3D aktivitas
+            animateAktivitas3DIcon(); // Mulai animasi ikon 3D aktivitas
 
             // Tampilkan modal hanya jika nama atau mode belum diatur.
             // Modal akan menghilang setelah pengguna mengisi nama dan memilih mode hidup.
@@ -2159,16 +2553,6 @@
             } else {
                 initialModalOverlay.classList.add('hidden-modal'); // Sembunyikan jika sudah diatur
             }
-
-            // Inisialisasi dan mulai animasi 3D ikon setelah DOM dimuat
-            initHafalan3DIcon();
-            animateHafalan3DIcon();
-            initAktivitas3DIcon(); // Inisialisasi ikon 3D aktivitas
-            animateAktivitas3DIcon(); // Mulai animasi ikon 3D aktivitas
-
-            // Muat cuaca dan jadwal shalat saat aplikasi dimuat
-            getWeather();
-            displayPrayerTimes(); // Tampilkan jadwal shalat
         });
 
     </script>
