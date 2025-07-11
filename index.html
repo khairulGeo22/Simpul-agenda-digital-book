@@ -1,1533 +1,2176 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SIMPUL - Kompas Hidup Kolaboratif</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #4361ee;
-      --secondary: #3f37c9;
-      --accent: #4895ef;
-      --light: #f8f9fa;
-      --dark: #212529;
-      --success: #4cc9f0;
-      --warning: #f72585;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-      --mode-gradient: linear-gradient(135deg, #4361ee, #4895ef);
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    body {
-      background: var(--mode-gradient);
-      color: #333;
-      min-height: 100vh;
-      padding: 20px;
-      line-height: 1.6;
-      transition: background 0.5s ease;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    /* Header Styles */
-    .app-header {
-      text-align: center;
-      padding: 25px 20px;
-      margin-bottom: 25px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: var(--card-shadow);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-    
-    .app-header::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: var(--mode-gradient);
-      transition: all 0.3s ease;
-    }
-    
-    .app-header h1 {
-      font-size: 2.2rem;
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      margin-bottom: 10px;
-    }
-    
-    #motivasiText {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      max-width: 600px;
-      margin: 0 auto;
-      font-style: italic;
-    }
-    
-    /* Card Styles */
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: var(--card-shadow);
-      transition: var(--transition);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-    
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-    }
-    
-    .card h2 {
-      color: var(--primary);
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid rgba(67, 97, 238, 0.1);
-    }
-    
-    /* Intro Section */
-    .intro-section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-bottom: 25px;
-    }
-    
-    /* Form Elements */
-    input, textarea, select {
-      width: 100%;
-      padding: 14px;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      font-size: 1rem;
-      margin-bottom: 15px;
-      transition: var(--transition);
-      background: rgba(255, 255, 255, 0.8);
-    }
-    
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
-    }
-    
-    button {
-      background: var(--mode-gradient);
-      color: white;
-      border: none;
-      padding: 14px 24px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 15px rgba(0, 0, 0, 0.25);
-    }
-    
-    button:active {
-      transform: translateY(1px);
-    }
-    
-    /* Mode Buttons */
-    .mode-options {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 12px;
-    }
-    
-    .mode-options button {
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--dark);
-      border: 1px solid #e0e0e0;
-      padding: 12px 10px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
-    
-    .mode-options button:hover {
-      background: var(--mode-gradient);
-      color: white;
-    }
-    
-    /* Checkbox Styles */
-    .checkbox-group {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-    }
-    
-    .checkbox-group label {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      background: rgba(72, 149, 239, 0.1);
-      border-radius: 10px;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-    
-    .checkbox-group label:hover {
-      background: rgba(72, 149, 239, 0.2);
-      transform: translateX(5px);
-    }
-    
-    .checkbox-group input {
-      width: auto;
-      margin-right: 10px;
-      margin-bottom: 0;
-    }
-    
-    /* Tab Styles */
-    .tab-section {
-      background: var(--card-bg);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-      margin-top: 25px;
-    }
-    
-    .tab-buttons {
-      display: flex;
-      background: var(--mode-gradient);
-      overflow-x: auto;
-    }
-    
-    .tab-buttons button {
-      flex: 1;
-      min-width: 120px;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-      padding: 18px 10px;
-      border-bottom: 3px solid transparent;
-      font-weight: 500;
-    }
-    
-    .tab-buttons button:hover, .tab-buttons button.active {
-      background: rgba(255, 255, 255, 0.15);
-      border-bottom: 3px solid white;
-    }
-    
-    .tab-content {
-      padding: 25px;
-    }
-    
-    .tab-item {
-      display: none;
-    }
-    
-    .tab-item.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    
-    th, td {
-      padding: 15px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
-    }
-    
-    th {
-      background: var(--primary);
-      color: white;
-    }
-    
-    tr:last-child td {
-      border-bottom: none;
-    }
-    
-    tr:hover {
-      background: rgba(72, 149, 239, 0.05);
-    }
-    
-    /* Animation Elements */
-    .gif-container {
-      text-align: center;
-      margin: 20px 0;
-    }
-    
-    .gif-placeholder {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background: var(--mode-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 2rem;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Calendar Grid */
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .calendar-day {
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-      transition: var(--transition);
-      cursor: pointer;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .calendar-day:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-      background: white;
-    }
-    
-    .day-number {
-      font-weight: bold;
-      margin-bottom: 5px;
-      color: var(--primary);
-    }
-    
-    .day-content {
-      flex-grow: 1;
-      font-size: 0.85rem;
-      color: #666;
-    }
-    
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .intro-section {
-        grid-template-columns: 1fr;
-      }
-      
-      .checkbox-group {
-        grid-template-columns: 1fr;
-      }
-      
-      .app-header h1 {
-        font-size: 1.8rem;
-      }
-      
-      .calendar-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .calendar-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .tab-buttons {
-        flex-direction: column;
-      }
-    }
-    
-    /* Floating Animation */
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .floating {
-      animation: float 4s ease-in-out infinite;
-    }
-    
-    /* Pulse Animation */
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    
-    .pulse {
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    /* Decorative Elements */
-    .decorative-element {
-      position: absolute;
-      z-index: -1;
-      opacity: 0.1;
-    }
-    
-    .circle {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: var(--accent);
-      top: 10%;
-      right: 5%;
-    }
-    
-    .square {
-      width: 150px;
-      height: 150px;
-      background: var(--warning);
-      bottom: 10%;
-      left: 5%;
-      transform: rotate(45deg);
-    }
-    
-    /* Progress Indicators */
-    .progress-container {
-      margin: 15px 0;
-    }
-    
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 5px;
-      font-size: 0.9rem;
-    }
-    
-    .progress-bar {
-      height: 10px;
-      background: #e0e0e0;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    
-    .progress-fill {
-      height: 100%;
-      background: var(--mode-gradient);
-      border-radius: 5px;
-      transition: width 0.5s ease;
-    }
-    
-    /* Grid Container for Main Sections */
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    
-    .datetime-inputs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    
-    /* Last Reflection Styling */
-    .last-reflection {
-      margin-top: 15px;
-      padding: 15px;
-      background: rgba(76, 201, 240, 0.1);
-      border-radius: 10px;
-    }
-    
-    /* Note Item Styling */
-    .note-item {
-      background: rgba(72, 149, 239, 0.1);
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-    
-    .notes-list {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .export-textarea {
-      width: 100%;
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      background: #f8f9fa;
-    }
-    
-    .memorization-table {
-      width: 100%;
-    }
-    
-    .hafalan-input {
-      width: 100%;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-    }
-    
-    .stats-output {
-      margin: 20px 0;
-    }
-    
-    /* Mode Indicator */
-    .mode-indicator {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    /* Collaboration Section */
-    .collaboration-section {
-      margin-top: 30px;
-    }
-    
-    .collab-card {
-      background: rgba(255, 255, 255, 0.92);
-      border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .collab-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid rgba(67, 97, 238, 0.1);
-    }
-    
-    .role-selector {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .role-btn {
-      background: rgba(255, 255, 255, 0.8);
-      border: 2px solid #ddd;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .role-btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-    
-    .collab-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    
-    .partner-card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
-    
-    .partner-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .partner-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .partner-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--mode-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.5rem;
-    }
-    
-    .pending-task {
-      background: #fff8e1;
-      border-left: 4px solid #ffc107;
-    }
-    
-    .completed-task {
-      background: #e8f5e9;
-      border-left: 4px solid #4caf50;
-    }
-    
-    .task-status {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-    
-    .pending {
-      background: #ffecb3;
-      color: #ff9800;
-    }
-    
-    .completed {
-      background: #c8e6c9;
-      color: #388e3c;
-    }
-    
-    .late {
-      background: #ffcdd2;
-      color: #d32f2f;
-    }
-    
-    .task-date {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 5px;
-    }
-    
-    .connect-btn {
-      background: #4caf50;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 10px;
-    }
-    
-    .shared-calendar {
-      width: 100%;
-      height: 400px;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-    
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: var(--primary);
-      color: white;
-    }
-    
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      padding: 15px;
-    }
-    
-    .calendar-day-header {
-      text-align: center;
-      padding: 10px;
-      font-weight: bold;
-      color: var(--primary);
-    }
-    
-    .calendar-day-cell {
-      padding: 10px;
-      border: 1px solid #eee;
-      min-height: 80px;
-      position: relative;
-    }
-    
-    .calendar-event {
-      background: rgba(76, 175, 80, 0.15);
-      border-left: 3px solid #4caf50;
-      padding: 5px;
-      margin-bottom: 5px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-    }
-    
-    .calendar-event.partner {
-      background: rgba(33, 150, 243, 0.15);
-      border-left: 3px solid #2196f3;
-    }
-    
-    /* Mode-specific themes */
-    body.mode-muslimah {
-      --mode-gradient: linear-gradient(135deg, #9c27b0, #673ab7);
-      --primary: #7b1fa2;
-    }
-    
-    body.mode-dosen {
-      --mode-gradient: linear-gradient(135deg, #1565c0, #0277bd);
-      --primary: #0d47a1;
-    }
-    
-    body.mode-mahasiswa {
-      --mode-gradient: linear-gradient(135deg, #2e7d32, #43a047);
-      --primary: #1b5e20;
-    }
-    
-    body.mode-freelancer {
-      --mode-gradient: linear-gradient(135deg, #ef6c00, #f57c00);
-      --primary: #e65100;
-    }
-    
-    body.mode-pengangguran {
-      --mode-gradient: linear-gradient(135deg, #c62828, #d32f2f);
-      --primary: #b71c1c;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMPUL - Kompas Hidup Kolaboratif</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA: Konten manifest.json yang di-embed langsung untuk lingkungan preview -->
+    <script type="application/json" id="manifest-json">
+    {
+        "name": "SIMPUL",
+        "short_name": "SIMPUL",
+        "description": "Kompas Hidup Kolaboratif",
+        "start_url": "./",
+        "display": "standalone",
+        "background_color": "#4361ee",
+        "theme_color": "#4361ee",
+        "icons": [
+            {
+                "src": "http://googleusercontent.com/file_content/5",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "http://googleusercontent.com/file_content/4",
+                "sizes": "512x512",
+                "type": "image/png"
+            },
+            {
+                "src": "http://googleusercontent.com/file_content/3",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "maskable"
+            }
+        ]
+    }
+    </script>
+    <!-- PWA: Menentukan warna tema untuk browser/OS -->
+    <meta name="theme-color" content="#4361ee">
+
+    <!-- Three.js CDN untuk grafis 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --mode-gradient: linear-gradient(135deg, #4361ee, #4895ef);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--mode-gradient);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            transition: background 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-grow: 1; /* Memastikan container mengambil sisa ruang */
+        }
+        
+        /* Header Styles */
+        .app-header {
+            text-align: center;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .app-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--mode-gradient);
+            transition: all 0.3s ease;
+        }
+        
+        .app-header h1 {
+            font-size: 2.2rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+        
+        #motivasiText {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+            white-space: nowrap; /* Penting untuk teks berjalan */
+            overflow: hidden; /* Penting untuk teks berjalan */
+            position: relative; /* Penting untuk animasi */
+        }
+
+        /* Animasi teks berjalan */
+        @keyframes scrollText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .scrolling-text {
+            animation: scrollText 20s linear infinite; /* Sesuaikan durasi dan kecepatan */
+        }
+        
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        }
+        
+        /* Intro Section - Now inside the modal */
+        .intro-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            /* Removed margin-bottom as it's now inside modal */
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            max-width: 900px; /* Batasi lebar intro section di dalam modal */
+            margin: 0 auto; /* Tengah di dalam modal */
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .modal-overlay.hidden-modal {
+            opacity: 0;
+            pointer-events: none; /* Mencegah interaksi saat tersembunyi */
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            max-width: 90%;
+            width: 900px; /* Max width for the modal content */
+            transform: translateY(0);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .modal-overlay.hidden-modal .modal-content {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        
+        /* Form Elements */
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+        }
+        
+        button {
+            background: var(--mode-gradient);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.25);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        /* Mode Buttons */
+        .mode-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+        
+        .mode-options button {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            border: 1px solid #e0e0e0;
+            padding: 12px 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .mode-options button:hover {
+            background: var(--mode-gradient);
+            color: white;
+        }
+        
+        /* Checkbox Styles */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(72, 149, 239, 0.1);
+            border-radius: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .checkbox-group label:hover {
+            background: rgba(72, 149, 239, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+            margin-bottom: 0;
+        }
+        
+        /* Tab Styles */
+        .tab-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-top: 25px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            background: var(--mode-gradient);
+            overflow-x: auto;
+        }
+        
+        .tab-buttons button {
+            flex: 1;
+            min-width: 120px;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            padding: 18px 10px;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+        }
+        
+        .tab-buttons button:hover, .tab-buttons button.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-bottom: 3px solid white;
+        }
+        
+        .tab-content {
+            padding: 25px;
+        }
+        
+        .tab-item {
+            display: none;
+        }
+        
+        .tab-item.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background: rgba(72, 149, 239, 0.05);
+        }
+        
+        /* Animation Elements */
+        .gif-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        /* Mengubah placeholder gif menjadi kontainer untuk canvas 3D */
+        .gif-placeholder {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--mode-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Penting untuk canvas */
+        }
+
+        /* Styling untuk canvas 3D agar pas di dalam placeholder */
+        .gif-placeholder canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        
+        /* Calendar Grid */
+        /* This style is for the shared calendar grid */
+        .shared-calendar .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px; /* Reduced gap for calendar cells */
+            padding: 15px;
+            background: white; /* Ensure background is white for calendar grid */
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            color: var(--primary);
+            background: rgba(var(--primary-rgb, 67, 97, 238), 0.1); /* Light background for day headers */
+            border-radius: 5px;
+        }
+        
+        .calendar-day-cell {
+            padding: 10px;
+            border: 1px solid #eee;
+            min-height: 80px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day-cell:hover {
+            background: rgba(72, 149, 239, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .calendar-day-cell .day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary);
+            font-size: 1.1em;
+        }
+
+        .calendar-event {
+            background: rgba(76, 175, 80, 0.15);
+            border-left: 3px solid #4caf50;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .calendar-event.partner {
+            background: rgba(33, 150, 243, 0.15);
+            border-left: 3px solid #2196f3;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .intro-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .grid-container { /* Adjust grid for smaller screens */
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .shared-calendar .calendar-grid { /* Apply to the unified calendar */
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .shared-calendar .calendar-grid { /* Apply to the unified calendar */
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Decorative Elements */
+        .decorative-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--accent);
+            top: 10%;
+            right: 5%;
+        }
+        
+        .square {
+            width: 150px;
+            height: 150px;
+            background: var(--warning);
+            bottom: 10%;
+            left: 5%;
+            transform: rotate(45deg);
+        }
+        
+        /* Progress Indicators */
+        .progress-container {
+            margin: 15px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--mode-gradient);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Grid Container for Main Sections */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .datetime-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        /* Last Reflection Styling */
+        .last-reflection {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(76, 201, 240, 0.1);
+            border-radius: 10px;
+        }
+        
+        /* Note Item Styling */
+        .note-item {
+            background: rgba(72, 149, 239, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .notes-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .export-textarea {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+        }
+        
+        .memorization-table {
+            width: 100%;
+        }
+        
+        .hafalan-input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .stats-output {
+            margin: 20px 0;
+        }
+        
+        /* Mode Indicator */
+        .mode-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Collaboration Section */
+        .collaboration-section {
+            margin-top: 30px;
+        }
+        
+        .collab-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .collab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .role-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .role-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .partner-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .partner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .partner-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--mode-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .pending-task {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .completed-task {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .task-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        
+        .pending {
+            background: #ffecb3;
+            color: #ff9800;
+        }
+        
+        .completed {
+            background: #c8e6c9;
+            color: #388e3c;
+        }
+        
+        .late {
+            background: #ffcdd2;
+            color: #d32f2f;
+        }
+        
+        .task-date {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .connect-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .shared-calendar {
+            width: 100%;
+            height: 400px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Mode-specific themes */
+        body.mode-muslimah {
+            --mode-gradient: linear-gradient(135deg, #9c27b0, #673ab7);
+            --primary: #7b1fa2;
+            --primary-rgb: 123, 31, 162; /* Add RGB for dynamic alpha */
+        }
+        
+        body.mode-dosen {
+            --mode-gradient: linear-gradient(135deg, #1565c0, #0277bd);
+            --primary: #0d47a1;
+            --primary-rgb: 13, 71, 161;
+        }
+        
+        body.mode-mahasiswa {
+            --mode-gradient: linear-gradient(135deg, #2e7d32, #43a047);
+            --primary: #1b5e20;
+            --primary-rgb: 27, 94, 32;
+        }
+        
+        body.mode-freelancer {
+            --mode-gradient: linear-gradient(135deg, #ef6c00, #f57c00);
+            --primary: #e65100;
+            --primary-rgb: 230, 81, 0;
+        }
+        
+        body.mode-pengangguran {
+            --mode-gradient: linear-gradient(135deg, #c62828, #d32f2f);
+            --primary: #b71c1c;
+            --primary-rgb: 183, 28, 28;
+        }
+
+        /* Footer Styles */
+        .app-footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .app-footer p {
+            margin: 5px 0;
+        }
+
+        .app-footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .app-footer a:hover {
+            color: var(--accent);
+        }
+
+        /* Keyframes for displayMessage */
+        @keyframes slideIn {
+            from { top: -50px; opacity: 0; }
+            to { top: 20px; opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Prayer Times Specific Styles */
+        .prayer-times-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .prayer-time-item {
+            background: rgba(72, 149, 239, 0.08);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(72, 149, 239, 0.15);
+            font-size: 0.9rem;
+        }
+
+        .prayer-time-item strong {
+            display: block;
+            font-size: 1.1em;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body class="mode-default">
-  <div class="container">
-    <!-- Mode Indicator -->
-    <div class="mode-indicator">
-      Mode: <span id="currentMode">Default</span>
+    <!-- Initial Modal Pop-up -->
+    <div class="modal-overlay" id="initialModalOverlay">
+        <div class="modal-content">
+            <section class="intro-section" id="introSection">
+                <div class="card floating">
+                    <h2><i class="fas fa-user-edit"></i> Siapa nama Anda?</h2>
+                    <input type="text" id="inputNama" placeholder="Contoh: Khairul">
+                    <button onclick="simpanNama()"><i class="fas fa-save"></i> Simpan Nama</button>
+                </div>
+                <div class="card pulse">
+                    <h2><i class="fas fa-sliders-h"></i> Pilih Mode Hidup Anda</h2>
+                    <div class="mode-options">
+                        <button onclick="setMode('muslimah')"><i class="fas fa-female"></i> Muslimah</button>
+                        <button onclick="setMode('dosen')"><i class="fas fa-chalkboard-teacher"></i> Dosen</button>
+                        <button onclick="setMode('mahasiswa')"><i class="fas fa-graduation-cap"></i> Mahasiswa</button>
+                        <button onclick="setMode('freelancer')"><i class="fas fa-laptop-code"></i> Freelancer</button>
+                        <button onclick="setMode('pengangguran')"><i class="fas fa-user-clock"></i> Produktif</button>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
-    
-    <!-- Decorative Background Elements -->
-    <div class="decorative-element circle"></div>
-    <div class="decorative-element square"></div>
-    
-    <!-- Form Pengisian Nama dan Mode -->
-    <section class="intro-section">
-      <div class="card floating">
-        <h2><i class="fas fa-user-edit"></i> Siapa nama Anda?</h2>
-        <input type="text" id="inputNama" placeholder="Contoh: Khairul">
-        <button onclick="simpanNama()"><i class="fas fa-save"></i> Simpan Nama</button>
-      </div>
-      <div class="card pulse">
-        <h2><i class="fas fa-sliders-h"></i> Pilih Mode Hidup Anda</h2>
-        <div class="mode-options">
-          <button onclick="setMode('muslimah')"><i class="fas fa-female"></i> Muslimah</button>
-          <button onclick="setMode('dosen')"><i class="fas fa-chalkboard-teacher"></i> Dosen</button>
-          <button onclick="setMode('mahasiswa')"><i class="fas fa-graduation-cap"></i> Mahasiswa</button>
-          <button onclick="setMode('freelancer')"><i class="fas fa-laptop-code"></i> Freelancer</button>
-          <button onclick="setMode('pengangguran')"><i class="fas fa-user-clock"></i> Produktif</button>
-        </div>
-      </div>
-    </section>
 
-    <header class="app-header">
-      <h1>Assalamu’alaikum, <span id="userName">Sahabat</span> <i class="fas fa-book-open"></i></h1>
-      <p id="motivasiText">Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya.</p>
-    </header>
-
-    <!-- Bagian Utama yang Selalu Tampil -->
-    <section class="core-section">
-      <!-- Grid Layout for Main Sections -->
-      <div class="grid-container">
-        <!-- Aktivitas Pagi & Harian -->
-        <div class="card">
-          <h2><i class="fas fa-sun"></i> Aktivitas Pagi & Harian</h2>
-          <div class="checkbox-group" id="aktivitasContainer">
-            <!-- Aktivitas akan diisi berdasarkan mode -->
-          </div>
-          
-          <div class="gif-container">
-            <div class="gif-placeholder">
-              <i class="fas fa-running"></i>
-            </div>
-            <p>Aktivitas Harian Anda</p>
-          </div>
-        </div>
-
-        <!-- Catatan Penting -->
-        <div class="card">
-          <h2><i class="fas fa-sticky-note"></i> Catatan Penting & Janji</h2>
-          <input type="text" id="catatanInput" placeholder="Contoh: Bertemu Pak Dodi...">
-          <div class="datetime-inputs">
-            <label><i class="far fa-calendar"></i> Tanggal: <input type="date" id="catatanTanggal"></label>
-            <label><i class="far fa-clock"></i> Jam: <input type="time" id="catatanJam"></label>
-          </div>
-          <div style="margin: 10px 0;">
-            <label>
-              <input type="checkbox" id="bagikanCatatan"> 
-              <i class="fas fa-share-alt"></i> Bagikan dengan pasangan/partner
-            </label>
-          </div>
-          <button onclick="tambahCatatanTerjadwal()"><i class="fas fa-plus"></i> Tambah Catatan</button>
-          <ul id="daftarCatatan" class="notes-list"></ul>
-        </div>
-
-        <!-- Ibadah -->
-        <div class="card">
-          <h2><i class="fas fa-mosque"></i> Ibadah Wajib & Sunnah</h2>
-          <div class="checkbox-group">
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="shubuh"> <i class="fas fa-praying-hands"></i> Shalat Shubuh</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="dhuhur"> <i class="fas fa-praying-hands"></i> Shalat Dhuhr</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="ashar"> <i class="fas fa-praying-hands"></i> Shalat Ashar</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="maghrib"> <i class="fas fa-praying-hands"></i> Shalat Maghrib</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="isya"> <i class="fas fa-praying-hands"></i> Shalat Isya</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="tahajud"> <i class="fas fa-moon"></i> Shalat Tahajud</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="dhuha"> <i class="fas fa-sun"></i> Shalat Dhuha</label>
-            <label><input type="checkbox" class="prayer-checkbox" data-prayer="dzikir-petang"> <i class="fas fa-dharmachakra"></i> Dzikir Petang</label>
-          </div>
-          
-          <div class="progress-container">
-            <div class="progress-label">
-              <span>Progress Ibadah</span>
-              <span id="ibadah-progress-value">0%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" id="ibadah-progress-fill"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hafalan Harian -->
-        <div class="card">
-          <h2><i class="fas fa-book-quran"></i> Hafalan Hari Ini</h2>
-          <input type="text" id="hafalanInput" placeholder="Contoh: QS. Al-Mulk 1–5">
-          
-          <div class="gif-container">
-            <div class="gif-placeholder">
-              <i class="fas fa-book-reader"></i>
-            </div>
-            <p>Hafalan Harian</p>
-          </div>
-          
-          <button onclick="simpanHafalan()" style="margin-top: 15px;"><i class="fas fa-save"></i> Simpan Hafalan</button>
-        </div>
-
-        <!-- Refleksi Pagi -->
-        <div class="card">
-          <h2><i class="fas fa-brain"></i> Refleksi Pagi</h2>
-          <textarea id="refleksiInput" placeholder="Apa yang kau syukuri hari ini?" rows="4"></textarea>
-          <button onclick="simpanRefleksi()"><i class="fas fa-cloud-upload-alt"></i> Simpan Refleksi</button>
-          <div id="lastRefleksi" class="last-reflection"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Kolaborasi Pasangan/Partner -->
-    <section class="collaboration-section">
-      <div class="collab-card">
-        <div class="collab-header">
-          <h2><i class="fas fa-people-arrows"></i> Kolaborasi Pasangan/Partner</h2>
-          <div class="role-selector">
-            <button class="role-btn active" onclick="setRole('pasangan')">Pasangan</button>
-            <button class="role-btn" onclick="setRole('profesional')">Profesional</button>
-          </div>
+    <div class="container">
+        <!-- Mode Indicator -->
+        <div class="mode-indicator">
+            Mode: <span id="currentMode">Default</span>
         </div>
         
-        <div class="collab-grid">
-          <!-- Kartu Pasangan -->
-          <div class="partner-card">
-            <div class="partner-header">
-              <div class="partner-avatar">
-                <i class="fas fa-heart"></i>
-              </div>
-              <div>
-                <h3>Pasangan</h3>
-                <p>Suami/Istri - Kolaborasi Rumah Tangga</p>
-              </div>
-            </div>
-            
-            <div class="pending-tasks">
-              <h4><i class="fas fa-exclamation-circle"></i> Janji Belum Tercapai</h4>
-              <ul id="pendingPasangan" class="notes-list"></ul>
-            </div>
-            
-            <button class="connect-btn" onclick="connectPartner('pasangan')">
-              <i class="fas fa-user-plus"></i> Hubungkan Pasangan
-            </button>
-          </div>
-          
-          <!-- Kartu Profesional -->
-          <div class="partner-card">
-            <div class="partner-header">
-              <div class="partner-avatar">
-                <i class="fas fa-briefcase"></i>
-              </div>
-              <div>
-                <h3>Profesional</h3>
-                <p>Bos/Asisten - Kolaborasi Pekerjaan</p>
-              </div>
-            </div>
-            
-            <div class="pending-tasks">
-              <h4><i class="fas fa-exclamation-circle"></i> Tugas Belum Tercapai</h4>
-              <ul id="pendingProfesional" class="notes-list"></ul>
-            </div>
-            
-            <button class="connect-btn" onclick="connectPartner('profesional')">
-              <i class="fas fa-user-plus"></i> Hubungkan Partner
-            </button>
-          </div>
-        </div>
+        <!-- Decorative Background Elements -->
+        <div class="decorative-element circle"></div>
+        <div class="decorative-element square"></div>
         
-        <h3 style="margin-top: 30px;"><i class="fas fa-calendar-alt"></i> Kalender Bersama</h3>
-        <div class="shared-calendar">
-          <div class="calendar-header">
-            <h3>Kalender Kolaboratif</h3>
-            <div>
-              <button><i class="fas fa-chevron-left"></i></button>
-              <span>Juli 2023</span>
-              <button><i class="fas fa-chevron-right"></i></button>
+        <header class="app-header">
+            <h1>Assalamu’alaikum, <span id="userName">Sahabat</span> <i class="fas fa-book-open"></i></h1>
+            <p id="motivasiText" class="scrolling-text">Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya.</p>
+        </header>
+
+        <!-- Bagian Utama yang Selalu Tampil -->
+        <section class="core-section">
+            <!-- Grid Layout for Main Sections -->
+            <div class="grid-container">
+                <!-- Aktivitas Pagi & Harian -->
+                <div class="card">
+                    <h2><i class="fas fa-sun"></i> Aktivitas Pagi & Harian</h2>
+                    <div class="checkbox-group" id="aktivitasContainer">
+                        <!-- Aktivitas akan diisi berdasarkan mode -->
+                    </div>
+                    
+                    <div class="gif-container">
+                        <div class="gif-placeholder" id="aktivitas3dIconContainer">
+                            <!-- Canvas untuk ikon 3D akan dirender di sini -->
+                            <canvas id="aktivitas3dIcon"></canvas>
+                        </div>
+                        <p>Aktivitas Harian Anda</p>
+                    </div>
+                </div>
+
+                <!-- Catatan Penting -->
+                <div class="card">
+                    <h2><i class="fas fa-sticky-note"></i> Catatan Penting & Janji</h2>
+                    <input type="text" id="catatanInput" placeholder="Contoh: Bertemu Pak Dodi...">
+                    <div class="datetime-inputs">
+                        <label><i class="far fa-calendar"></i> Tanggal: <input type="date" id="catatanTanggal"></label>
+                        <label><i class="far fa-clock"></i> Jam: <input type="time" id="catatanJam"></label>
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <label>
+                            <input type="checkbox" id="bagikanCatatan"> 
+                            <i class="fas fa-share-alt"></i> Bagikan dengan pasangan/partner
+                        </label>
+                    </div>
+                    <button onclick="tambahCatatanTerjadwal()"><i class="fas fa-plus"></i> Tambah Catatan</button>
+                    <ul id="daftarCatatan" class="notes-list"></ul>
+                </div>
+
+                <!-- Ibadah -->
+                <div class="card">
+                    <h2><i class="fas fa-mosque"></i> Ibadah Wajib & Sunnah</h2>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="shubuh"> <i class="fas fa-praying-hands"></i> Shalat Shubuh</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="dhuhur"> <i class="fas fa-praying-hands"></i> Shalat Dhuhr</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="ashar"> <i class="fas fa-praying-hands"></i> Shalat Ashar</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="maghrib"> <i class="fas fa-praying-hands"></i> Shalat Maghrib</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="isya"> <i class="fas fa-praying-hands"></i> Shalat Isya</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="tahajud"> <i class="fas fa-moon"></i> Shalat Tahajud</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="dhuha"> <i class="fas fa-sun"></i> Shalat Dhuha</label>
+                        <label><input type="checkbox" class="prayer-checkbox" data-prayer="dzikir-petang"> <i class="fas fa-dharmachakra"></i> Dzikir Petang</label>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Progress Ibadah</span>
+                            <span id="ibadah-progress-value">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="ibadah-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hafalan Harian -->
+                <div class="card">
+                    <h2><i class="fas fa-book-quran"></i> Hafalan Hari Ini</h2>
+                    <input type="text" id="hafalanInput" placeholder="Contoh: QS. Al-Mulk 1–5">
+                    
+                    <div class="gif-container">
+                        <div class="gif-placeholder" id="hafalan3dIconContainer">
+                            <!-- Canvas untuk ikon 3D akan dirender di sini -->
+                            <canvas id="hafalan3dIcon"></canvas>
+                        </div>
+                        <p>Hafalan Harian</p>
+                    </div>
+                    
+                    <button onclick="simpanHafalan()" style="margin-top: 15px;"><i class="fas fa-save"></i> Simpan Hafalan</button>
+                </div>
+
+                <!-- Refleksi Pagi -->
+                <div class="card">
+                    <h2><i class="fas fa-brain"></i> Refleksi Pagi</h2>
+                    <textarea id="refleksiInput" placeholder="Apa yang kau syukuri hari ini?" rows="4"></textarea>
+                    <button onclick="simpanRefleksi()"><i class="fas fa-cloud-upload-alt"></i> Simpan Refleksi</button>
+                    <div id="lastRefleksi" class="last-reflection"></div>
+                </div>
+
+                <!-- Cuaca Harian -->
+                <div class="card">
+                    <h2><i class="fas fa-cloud-sun"></i> Cuaca Harian</h2>
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <i id="weatherIcon" class="fas fa-question-circle" style="font-size: 3rem; color: var(--accent);"></i>
+                        <p id="weatherCondition" style="font-size: 1.2rem; font-weight: bold; margin-top: 10px;">Memuat cuaca...</p>
+                        <p id="locationInfo" style="font-size: 0.9rem; color: #666;">Mencari lokasi...</p>
+                        <p style="font-size: 0.8rem; color: #999; margin-top: 10px;">
+                            <i class="fas fa-info-circle"></i> Data cuaca ini disimulasikan. Untuk cuaca real-time, diperlukan backend.
+                        </p>
+                    </div>
+                    <button onclick="getWeather()"><i class="fas fa-sync-alt"></i> Perbarui Cuaca</button>
+                </div>
+
+                <!-- Jadwal Shalat Harian -->
+                <div class="card">
+                    <h2><i class="fas fa-mosque"></i> Jadwal Shalat Harian</h2>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                        <i class="fas fa-map-marker-alt"></i> Untuk Wilayah Banda Aceh (Simulasi)
+                    </p>
+                    <div class="prayer-times-grid" id="prayerTimesDisplay">
+                        <!-- Waktu shalat akan diisi di sini oleh JavaScript -->
+                    </div>
+                    <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">
+                        <i class="fas fa-info-circle"></i> Waktu shalat ini adalah simulasi. Untuk akurasi, diperlukan integrasi API backend.
+                    </p>
+                </div>
             </div>
-          </div>
-          <div class="calendar-grid">
-            <div class="calendar-day-header">Sen</div>
-            <div class="calendar-day-header">Sel</div>
-            <div class="calendar-day-header">Rab</div>
-            <div class="calendar-day-header">Kam</div>
-            <div class="calendar-day-header">Jum</div>
-            <div class="calendar-day-header">Sab</div>
-            <div class="calendar-day-header">Min</div>
-            
-            <!-- Tanggal akan diisi oleh JavaScript -->
-            <div class="calendar-day-cell">1</div>
-            <div class="calendar-day-cell">2</div>
-            <div class="calendar-day-cell">3</div>
-            <div class="calendar-day-cell">4</div>
-            <div class="calendar-day-cell">5</div>
-            <div class="calendar-day-cell">6</div>
-            <div class="calendar-day-cell">7</div>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- Navigasi Tab (Konten Bergantian) -->
-    <section class="tab-section">
-      <div class="tab-buttons">
-        <button onclick="showTab('tracker')" class="tab-button active" data-tab="tracker"><i class="fas fa-book"></i> Tracker</button>
-        <button onclick="showTab('statistik')" class="tab-button" data-tab="statistik"><i class="fas fa-chart-bar"></i> Statistik</button>
-        <button onclick="showTab('kalender')" class="tab-button" data-tab="kalender"><i class="fas fa-calendar-alt"></i> Kalender</button>
-        <button onclick="showTab('ekspor')" class="tab-button" data-tab="ekspor"><i class="fas fa-file-export"></i> Ekspor</button>
-      </div>
+        <!-- Kolaborasi Pasangan/Partner -->
+        <section class="collaboration-section" id="collaborationSection">
+            <div class="collab-card">
+                <div class="collab-header">
+                    <h2><i class="fas fa-people-arrows"></i> Kolaborasi Pasangan/Partner</h2>
+                    <div class="role-selector">
+                        <button class="role-btn active" onclick="setRole('pasangan')">Pasangan</button>
+                        <button class="role-btn" onclick="setRole('profesional')">Profesional</button>
+                    </div>
+                </div>
+                
+                <div class="collab-grid">
+                    <!-- Kartu Pasangan -->
+                    <div class="partner-card">
+                        <div class="partner-header">
+                            <div class="partner-avatar">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div>
+                                <h3>Pasangan</h3>
+                                <p>Suami/Istri - Kolaborasi Rumah Tangga</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pending-tasks">
+                            <h4><i class="fas fa-exclamation-circle"></i> Janji Belum Tercapai</h4>
+                            <ul id="pendingPasangan" class="notes-list"></ul>
+                        </div>
+                        
+                        <button class="connect-btn" onclick="connectPartner('pasangan')">
+                            <i class="fas fa-user-plus"></i> Hubungkan Pasangan
+                        </button>
+                    </div>
+                    
+                    <!-- Kartu Profesional -->
+                    <div class="partner-card">
+                        <div class="partner-header">
+                            <div class="partner-avatar">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div>
+                                <h3>Profesional</h3>
+                                <p>Bos/Asisten - Kolaborasi Pekerjaan</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pending-tasks">
+                            <h4><i class="fas fa-exclamation-circle"></i> Tugas Belum Tercapai</h4>
+                            <ul id="pendingProfesional" class="notes-list"></ul>
+                        </div>
+                        
+                        <button class="connect-btn" onclick="connectPartner('profesional')">
+                            <i class="fas fa-user-plus"></i> Hubungkan Partner
+                        </button>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px;"><i class="fas fa-calendar-alt"></i> Kalender Bersama</h3>
+                <div class="shared-calendar" id="mainCalendar">
+                    <div class="calendar-header">
+                        <h3>Kalender Kolaboratif</h3>
+                        <div>
+                            <button><i class="fas fa-chevron-left"></i></button>
+                            <span>Juli 2023</span>
+                            <button><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="unifiedCalendarGrid">
+                        <!-- Tanggal akan diisi oleh JavaScript -->
+                        <div class="calendar-day-header">Sen</div>
+                        <div class="calendar-day-header">Sel</div>
+                        <div class="calendar-day-header">Rab</div>
+                        <div class="calendar-day-header">Kam</div>
+                        <div class="calendar-day-header">Jum</div>
+                        <div class="calendar-day-header">Sab</div>
+                        <div class="calendar-day-header">Min</div>
+                        
+                        <!-- Contoh sel yang akan diisi JS -->
+                        <div class="calendar-day-cell"><div class="day-number">1</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">2</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">3</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">4</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">5</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">6</div><div class="day-content"></div></div>
+                        <div class="calendar-day-cell"><div class="day-number">7</div><div class="day-content"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <div class="tab-content">
-        <div id="tab-tracker" class="tab-item active">
-          <h3><i class="fas fa-book"></i> Tracker Hafalan Mingguan</h3>
-          <table class="memorization-table">
-            <tr><th>Hari</th><th>Hafalan</th></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Senin</td><td><input type="text" id="hafalan-senin" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Selasa</td><td><input type="text" id="hafalan-selasa" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Rabu</td><td><input type="text" id="hafalan-rabu" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Kamis</td><td><input type="text" id="hafalan-kamis" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Jumat</td><td><input type="text" id="hafalan-jumat" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Sabtu</td><td><input type="text" id="hafalan-sabtu" class="hafalan-input"></td></tr>
-            <tr><td><i class="fas fa-calendar-day"></i> Ahad</td><td><input type="text" id="hafalan-ahad" class="hafalan-input"></td></tr>
-          </table>
-          <button onclick="simpanHafalanMingguan()"><i class="fas fa-save"></i> Simpan Hafalan</button>
-        </div>
+        <!-- Navigasi Tab (Konten Bergantian) -->
+        <section class="tab-section">
+            <div class="tab-buttons">
+                <button onclick="showTab('tracker')" class="tab-button active" data-tab="tracker"><i class="fas fa-book"></i> Tracker</button>
+                <button onclick="showTab('statistik')" class="tab-button" data-tab="statistik"><i class="fas fa-chart-bar"></i> Statistik</button>
+                <button onclick="showTab('kalender')" class="tab-button" data-tab="kalender"><i class="fas fa-calendar-alt"></i> Kalender</button>
+                <button onclick="showTab('ekspor')" class="tab-button" data-tab="ekspor"><i class="fas fa-file-export"></i> Ekspor</button>
+            </div>
 
-        <div id="tab-statistik" class="tab-item">
-          <h3><i class="fas fa-chart-bar"></i> Statistik Mingguan</h3>
-          <div id="statistikOutput" class="stats-output">
-            <!-- Statistik akan diisi oleh JavaScript -->
-          </div>
-          <button onclick="hitungStatistik()"><i class="fas fa-calculator"></i> Lihat Statistik</button>
-        </div>
+            <div class="tab-content">
+                <div id="tab-tracker" class="tab-item active">
+                    <h3><i class="fas fa-book"></i> Tracker Hafalan Mingguan</h3>
+                    <table class="memorization-table">
+                        <tr><th>Hari</th><th>Hafalan</th></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Senin</td><td><input type="text" id="hafalan-senin" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Selasa</td><td><input type="text" id="hafalan-selasa" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Rabu</td><td><input type="text" id="hafalan-rabu" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Kamis</td><td><input type="text" id="hafalan-kamis" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Jumat</td><td><input type="text" id="hafalan-jumat" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Sabtu</td><td><input type="text" id="hafalan-sabtu" class="hafalan-input"></td></tr>
+                        <tr><td><i class="fas fa-calendar-day"></i> Ahad</td><td><input type="text" id="hafalan-ahad" class="hafalan-input"></td></tr>
+                    </table>
+                    <button onclick="simpanHafalanMingguan()"><i class="fas fa-save"></i> Simpan Hafalan</button>
+                </div>
 
-        <div id="tab-kalender" class="tab-item">
-          <h3><i class="fas fa-calendar-alt"></i> Kalender Hafalan & Refleksi</h3>
-          <div id="kalenderContainer" class="calendar-grid">
-            <!-- Calendar will be generated by JavaScript -->
-          </div>
-        </div>
+                <div id="tab-statistik" class="tab-item">
+                    <h3><i class="fas fa-chart-bar"></i> Statistik Mingguan</h3>
+                    <div id="statistikOutput" class="stats-output">
+                        <!-- Statistik akan diisi oleh JavaScript -->
+                    </div>
+                    <button onclick="hitungStatistik()"><i class="fas fa-calculator"></i> Lihat Statistik</button>
+                </div>
 
-        <div id="tab-ekspor" class="tab-item">
-          <h3><i class="fas fa-file-export"></i> Ekspor Data Harian</h3>
-          <button onclick="exportData()"><i class="fas fa-download"></i> Unduh atau Salin Semua Data</button>
-          <textarea id="exportOutput" rows="8" readonly class="export-textarea"></textarea>
-        </div>
-      </div>
-    </section>
-  </div>
+                <div id="tab-kalender" class="tab-item">
+                    <!-- Kalender ini sekarang akan mengarahkan ke kalender kolaboratif utama -->
+                    <p>Lihat kalender kolaboratif Anda di bagian <a href="#collaborationSection" onclick="scrollToCollaboration()">Kolaborasi Pasangan/Partner</a>.</p>
+                </div>
 
-  <script>
-    // Data aktivitas berdasarkan mode
-    const activitiesByMode = {
-      default: [
-        { id: 'bangun', text: 'Bangun Tanpa Alarm', icon: 'fas fa-bed' },
-        { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
-        { id: 'bantu-istri', text: 'Bantu Istri', icon: 'fas fa-hands-helping' },
-        { id: 'quality-time', text: 'Quality Time Anak', icon: 'fas fa-child' },
-        { id: 'ngopi', text: 'Ngopi Sejenak', icon: 'fas fa-coffee' },
-        { id: 'nulis', text: 'Nulis Artikel / Ide', icon: 'fas fa-pen' },
-        { id: 'baca', text: 'Baca Buku / Qur\'an', icon: 'fas fa-book' }
-      ],
-      muslimah: [
-        { id: 'bangun', text: 'Shalat Tahajud', icon: 'fas fa-moon' },
-        { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
-        { id: 'memasak', text: 'Siapkan Sarapan', icon: 'fas fa-utensils' },
-        { id: 'mengaji', text: 'Mengaji 1 Juz', icon: 'fas fa-book-quran' },
-        { id: 'hijab', text: 'Persiapan Hijab Syar\'i', icon: 'fas fa-tshirt' },
-        { id: 'belanja', text: 'Belanja Kebutuhan', icon: 'fas fa-shopping-cart' },
-        { id: 'kajian', text: 'Hadiri Kajian Online', icon: 'fas fa-users' }
-      ],
-      dosen: [
-        { id: 'bangun', text: 'Bangun Pagi', icon: 'fas fa-sun' },
-        { id: 'shalat', text: 'Shalat Shubuh', icon: 'fas fa-praying-hands' },
-        { id: 'persiapan', text: 'Persiapan Materi Kuliah', icon: 'fas fa-chalkboard' },
-        { id: 'kuliah', text: 'Mengajar Kelas Pagi', icon: 'fas fa-chalkboard-teacher' },
-        { id: 'riset', text: 'Riset & Penelitian', icon: 'fas fa-flask' },
-        { id: 'bimbingan', text: 'Bimbingan Mahasiswa', icon: 'fas fa-user-graduate' },
-        { id: 'jurnal', text: 'Review Jurnal Ilmiah', icon: 'fas fa-file-alt' }
-      ],
-      mahasiswa: [
-        { id: 'bangun', text: 'Bangun Pagi', icon: 'fas fa-sun' },
-        { id: 'shalat', text: 'Shalat Shubuh', icon: 'fas fa-praying-hands' },
-        { id: 'sarapan', text: 'Sarapan Sehat', icon: 'fas fa-egg' },
-        { id: 'kuliah', text: 'Kelas Pagi', icon: 'fas fa-book-reader' },
-        { id: 'perpus', text: 'Ke Perpustakaan', icon: 'fas fa-book' },
-        { id: 'tugas', text: 'Kerjakan Tugas', icon: 'fas fa-tasks' },
-        { id: 'organisasi', text: 'Kegiatan Organisasi', icon: 'fas fa-users' }
-      ],
-      freelancer: [
-        { id: 'bangun', text: 'Bangun Tanpa Alarm', icon: 'fas fa-bed' },
-        { id: 'olahraga', text: 'Olahraga Pagi', icon: 'fas fa-running' },
-        { id: 'perencanaan', text: 'Rencanakan Pekerjaan', icon: 'fas fa-clipboard-list' },
-        { id: 'kerja1', text: 'Fokus Kerja (POMODORO)', icon: 'fas fa-laptop-code' },
-        { id: 'meeting', text: 'Meeting dengan Klien', icon: 'fas fa-video' },
-        { id: 'kerja2', text: 'Lanjutkan Proyek', icon: 'fas fa-code' },
-        { id: 'skill', text: 'Upgrade Skill Baru', icon: 'fas fa-graduation-cap' }
-      ],
-      pengangguran: [
-        { id: 'bangun', text: 'Shalat Tahajud', icon: 'fas fa-moon' },
-        { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
-        { id: 'olahraga', text: 'Olahraga Pagi', icon: 'fas fa-running' },
-        { id: 'mencari', text: 'Cari Lowongan Kerja', icon: 'fas fa-search' },
-        { id: 'skill', text: 'Belajar Skill Baru', icon: 'fas fa-laptop-code' },
-        { id: 'jaringan', text: 'Perluas Jaringan', icon: 'fas fa-users' },
-        { id: 'freelance', text: 'Kerjakan Proyek Freelance', icon: 'fas fa-tasks' }
-      ]
-    };
+                <div id="tab-ekspor" class="tab-item">
+                    <h3><i class="fas fa-file-export"></i> Ekspor Data Harian</h3>
+                    <button onclick="exportData()"><i class="fas fa-download"></i> Unduh atau Salin Semua Data</button>
+                    <textarea id="exportOutput" rows="8" readonly class="export-textarea"></textarea>
+                </div>
+            </div>
+        </section>
+    </div>
 
-    // Data kolaborasi
-    let partnerData = {
-      pasangan: {
-        name: "Belum Terhubung",
-        tasks: []
-      },
-      profesional: {
-        name: "Belum Terhubung",
-        tasks: []
-      }
-    };
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Produk oleh CV. Simpul Project Academy</p>
+        <p>Desain oleh <a href="mailto:m.khairul311089@gmail.com">Muhammad Khairul, S.Pd, M.Pd</a></p>
+        <p>Hubungi: <a href="https://wa.me/6285262608383" target="_blank">+62 852-6260-8383</a></p>
+    </footer>
 
-    // Simpan nama pengguna
-    function simpanNama() {
-      const nama = document.getElementById('inputNama').value;
-      if (nama.trim() !== '') {
-        document.getElementById('userName').textContent = nama;
-        localStorage.setItem('userName', nama);
-        showNotification(`Nama "${nama}" berhasil disimpan!`);
-      } else {
-        showNotification('Mohon masukkan nama Anda');
-      }
-    }
+    <script>
+        // Data aktivitas berdasarkan mode
+        const activitiesByMode = {
+            default: [
+                { id: 'bangun', text: 'Bangun Tanpa Alarm', icon: 'fas fa-bed' },
+                { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
+                { id: 'bantu-istri', text: 'Bantu Istri', icon: 'fas fa-hands-helping' },
+                { id: 'quality-time', text: 'Quality Time Anak', icon: 'fas fa-child' },
+                { id: 'ngopi', text: 'Ngopi Sejenak', icon: 'fas fa-coffee' },
+                { id: 'nulis', text: 'Nulis Artikel / Ide', icon: 'fas fa-pen' },
+                { id: 'baca', text: 'Baca Buku / Qur\'an', icon: 'fas fa-book' }
+            ],
+            muslimah: [
+                { id: 'bangun', text: 'Shalat Tahajud', icon: 'fas fa-moon' },
+                { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
+                { id: 'memasak', text: 'Siapkan Sarapan', icon: 'fas fa-utensils' },
+                { id: 'mengaji', text: 'Mengaji 1 Juz', icon: 'fas fa-book-quran' },
+                { id: 'hijab', text: 'Persiapan Hijab Syar\'i', icon: 'fas fa-tshirt' },
+                { id: 'belanja', text: 'Belanja Kebutuhan', icon: 'fas fa-shopping-cart' },
+                { id: 'kajian', text: 'Hadiri Kajian Online', icon: 'fas fa-users' }
+            ],
+            dosen: [
+                { id: 'bangun', text: 'Bangun Pagi', icon: 'fas fa-sun' },
+                { id: 'shalat', text: 'Shalat Shubuh', icon: 'fas fa-praying-hands' },
+                { id: 'persiapan', text: 'Persiapan Materi Kuliah', icon: 'fas fa-chalkboard' },
+                { id: 'kuliah', text: 'Mengajar Kelas Pagi', icon: 'fas fa-chalkboard-teacher' },
+                { id: 'riset', text: 'Riset & Penelitian', icon: 'fas fa-flask' },
+                { id: 'bimbingan', text: 'Bimbingan Mahasiswa', icon: 'fas fa-user-graduate' },
+                { id: 'jurnal', text: 'Review Jurnal Ilmiah', icon: 'fas fa-file-alt' }
+            ],
+            mahasiswa: [
+                { id: 'bangun', text: 'Bangun Pagi', icon: 'fas fa-sun' },
+                { id: 'shalat', text: 'Shalat Shubuh', icon: 'fas fa-praying-hands' },
+                { id: 'sarapan', text: 'Sarapan Sehat', icon: 'fas fa-egg' },
+                { id: 'kuliah', text: 'Kelas Pagi', icon: 'fas fa-book-reader' },
+                { id: 'perpus', text: 'Ke Perpustakaan', icon: 'fas fa-book' },
+                { id: 'tugas', text: 'Kerjakan Tugas', icon: 'fas fa-tasks' },
+                { id: 'organisasi', text: 'Kegiatan Organisasi', icon: 'fas fa-users' }
+            ],
+            freelancer: [
+                { id: 'bangun', text: 'Bangun Tanpa Alarm', icon: 'fas fa-bed' },
+                { id: 'olahraga', text: 'Olahraga Pagi', icon: 'fas fa-running' },
+                { id: 'perencanaan', text: 'Rencanakan Pekerjaan', icon: 'fas fa-clipboard-list' },
+                { id: 'kerja1', text: 'Fokus Kerja (POMODORO)', icon: 'fas fa-laptop-code' },
+                { id: 'meeting', text: 'Meeting dengan Klien', icon: 'fas fa-video' },
+                { id: 'kerja2', text: 'Lanjutkan Proyek', icon: 'fas fa-code' },
+                { id: 'skill', text: 'Upgrade Skill Baru', icon: 'fas fa-graduation-cap' }
+            ],
+            pengangguran: [
+                { id: 'bangun', text: 'Shalat Tahajud', icon: 'fas fa-moon' },
+                { id: 'dzikir', text: 'Dzikir Pagi', icon: 'fas fa-pray' },
+                { id: 'olahraga', text: 'Olahraga Pagi', icon: 'fas fa-running' },
+                { id: 'mencari', text: 'Cari Lowongan Kerja', icon: 'fas fa-search' },
+                { id: 'skill', text: 'Belajar Skill Baru', icon: 'fas fa-laptop-code' },
+                { id: 'networking', text: 'Networking / Kenalan Baru', icon: 'fas fa-handshake' },
+                { id: 'volunteer', text: 'Kegiatan Sosial / Volunteer', icon: 'fas fa-people-carry' }
+            ]
+        };
 
-    // Set mode hidup
-    function setMode(mode) {
-      const modeNames = {
-        muslimah: 'Muslimah',
-        dosen: 'Dosen',
-        mahasiswa: 'Mahasiswa',
-        freelancer: 'Freelancer',
-        pengangguran: 'Produktif'
-      };
-      
-      // Update body class untuk tema warna
-      document.body.className = `mode-${mode}`;
-      document.getElementById('currentMode').textContent = modeNames[mode];
-      
-      showNotification(`Mode "${modeNames[mode]}" dipilih`);
-      localStorage.setItem('userMode', mode);
-      
-      // Update aktivitas berdasarkan mode
-      updateActivities(mode);
-      
-      // Update motivasi text based on mode
-      const motivasiTexts = {
-        muslimah: 'Wanita shalihah adalah perhiasan dunia yang paling indah',
-        dosen: 'Mendidik adalah ibadah yang mulia',
-        mahasiswa: 'Menuntut ilmu adalah kewajiban setiap muslim',
-        freelancer: 'Bekerja dengan profesional adalah amanah',
-        pengangguran: 'Setiap hari adalah kesempatan untuk menjadi lebih baik'
-      };
-      
-      document.getElementById('motivasiText').textContent = motivasiTexts[mode] || 
-        'Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya';
-    }
-    
-    // Set role kolaborasi
-    function setRole(role) {
-      document.querySelectorAll('.role-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-    }
-    
-    // Update aktivitas berdasarkan mode
-    function updateActivities(mode) {
-      const activities = activitiesByMode[mode] || activitiesByMode.default;
-      const container = document.getElementById('aktivitasContainer');
-      container.innerHTML = '';
-      
-      activities.forEach(activity => {
-        const label = document.createElement('label');
-        label.innerHTML = `
-          <input type="checkbox" class="activity-checkbox" data-activity="${activity.id}">
-          <i class="${activity.icon}"></i> ${activity.text}
-        `;
-        container.appendChild(label);
-      });
-      
-      // Tambahkan event listener untuk checkbox baru
-      document.querySelectorAll('.activity-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', hitungStatistik);
-      });
-    }
+        // Variabel untuk melacak status pengisian
+        let isNameSet = false;
+        let isModeSet = false;
 
-    // Tambah catatan terjadwal
-    function tambahCatatanTerjadwal() {
-      const catatan = document.getElementById('catatanInput').value;
-      const tanggal = document.getElementById('catatanTanggal').value;
-      const jam = document.getElementById('catatanJam').value;
-      const bagikan = document.getElementById('bagikanCatatan').checked;
-      
-      if (catatan.trim() === '') {
-        showNotification('Mohon isi catatan terlebih dahulu');
-        return;
-      }
-      
-      if (!tanggal || !jam) {
-        showNotification('Mohon isi tanggal dan jam');
-        return;
-      }
-      
-      const daftarCatatan = document.getElementById('daftarCatatan');
-      const newNote = document.createElement('li');
-      
-      const status = new Date(`${tanggal}T${jam}`) > new Date() ? 'pending' : 'late';
-      
-      newNote.innerHTML = `
-        <div class="note-item ${status === 'pending' ? 'pending-task' : 'completed-task'}">
-          <div class="task-status ${status}">${status === 'pending' ? 'Belum Terlaksana' : 'Terlambat'}</div>
-          <strong><i class="far fa-calendar-check"></i> ${tanggal} ${jam}</strong>
-          <p style="margin-top: 5px;">${catatan}</p>
-          ${bagikan ? '<div style="margin-top: 5px; color: #4361ee;"><i class="fas fa-share-alt"></i> Dibatalkan dengan pasangan</div>' : ''}
-        </div>
-      `;
-      
-      daftarCatatan.appendChild(newNote);
-      
-      // Jika dibagikan, tambahkan ke pasangan
-      if (bagikan) {
-        const partnerType = document.querySelector('.role-btn.active').textContent.toLowerCase();
-        addSharedTask(partnerType, catatan, tanggal, jam);
-      }
-      
-      // Clear inputs
-      document.getElementById('catatanInput').value = '';
-      document.getElementById('catatanTanggal').value = '';
-      document.getElementById('catatanJam').value = '';
-      document.getElementById('bagikanCatatan').checked = false;
-      
-      // Save to localStorage
-      saveNotes();
-      
-      showNotification('Catatan berhasil ditambahkan!');
-    }
+        // Mendapatkan referensi ke elemen modal dan intro-section
+        const initialModalOverlay = document.getElementById('initialModalOverlay');
+        const introSection = document.getElementById('introSection'); // Ini sekarang adalah konten di dalam modal
+        const collaborationSection = document.getElementById('collaborationSection'); // Untuk scroll ke kalender
 
-    // Tambah tugas bersama
-    function addSharedTask(partnerType, task, date, time) {
-      const taskId = Date.now();
-      
-      partnerData[partnerType].tasks.push({
-        id: taskId,
-        task: task,
-        date: date,
-        time: time,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      });
-      
-      localStorage.setItem('partnerData', JSON.stringify(partnerData));
-      updatePendingTasks();
-    }
-
-    // Update tampilan tugas yang belum selesai
-    function updatePendingTasks() {
-      // Untuk pasangan
-      const pendingPasangan = document.getElementById('pendingPasangan');
-      pendingPasangan.innerHTML = '';
-      
-      partnerData.pasangan.tasks.filter(task => task.status === 'pending').forEach(task => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div class="note-item pending-task">
-            <div class="task-status pending">Belum Terlaksana</div>
-            <strong>${task.date} ${task.time}</strong>
-            <p>${task.task}</p>
-            <div class="task-date">Dibuat: ${new Date(task.createdAt).toLocaleString()}</div>
-          </div>
-        `;
-        pendingPasangan.appendChild(li);
-      });
-      
-      // Untuk profesional
-      const pendingProfesional = document.getElementById('pendingProfesional');
-      pendingProfesional.innerHTML = '';
-      
-      partnerData.profesional.tasks.filter(task => task.status === 'pending').forEach(task => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <div class="note-item pending-task">
-            <div class="task-status pending">Belum Terlaksana</div>
-            <strong>${task.date} ${task.time}</strong>
-            <p>${task.task}</p>
-            <div class="task-date">Dibuat: ${new Date(task.createdAt).toLocaleString()}</div>
-          </div>
-        `;
-        pendingProfesional.appendChild(li);
-      });
-    }
-
-    // Hubungkan pasangan/partner
-    function connectPartner(partnerType) {
-      const name = prompt(`Masukkan nama ${partnerType === 'pasangan' ? 'pasangan' : 'partner profesional'} Anda:`);
-      if (name) {
-        partnerData[partnerType].name = name;
-        localStorage.setItem('partnerData', JSON.stringify(partnerData));
-        
-        // Update avatar
-        const avatar = document.querySelector(`.partner-card:${partnerType === 'pasangan' ? 'first-child' : 'last-child'} .partner-avatar`);
-        avatar.innerHTML = `<i class="fas fa-${partnerType === 'pasangan' ? 'heart' : 'briefcase'}"></i>`;
-        
-        // Update name
-        const nameElement = document.querySelector(`.partner-card:${partnerType === 'pasangan' ? 'first-child' : 'last-child'} h3`);
-        nameElement.textContent = name;
-        
-        showNotification(`Berhasil terhubung dengan ${name}`);
-      }
-    }
-
-    // Simpan refleksi
-    function simpanRefleksi() {
-      const refleksi = document.getElementById('refleksiInput').value;
-      if (refleksi.trim() !== '') {
-        document.getElementById('lastRefleksi').innerHTML = `
-          <strong><i class="fas fa-history"></i> Refleksi Terakhir:</strong>
-          <p>${refleksi}</p>
-        `;
-        localStorage.setItem('lastReflection', refleksi);
-        document.getElementById('refleksiInput').value = '';
-        showNotification('Refleksi berhasil disimpan!');
-      } else {
-        showNotification('Mohon isi refleksi terlebih dahulu');
-      }
-    }
-
-    // Simpan hafalan harian
-    function simpanHafalan() {
-      const hafalan = document.getElementById('hafalanInput').value;
-      if (hafalan.trim() !== '') {
-        localStorage.setItem('dailyMemorization', hafalan);
-        showNotification('Hafalan harian berhasil disimpan!');
-      } else {
-        showNotification('Mohon isi hafalan harian');
-      }
-    }
-
-    // Simpan hafalan mingguan
-    function simpanHafalanMingguan() {
-      const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'ahad'];
-      let weeklyData = {};
-      
-      days.forEach(day => {
-        const value = document.getElementById(`hafalan-${day}`).value;
-        weeklyData[day] = value;
-      });
-      
-      localStorage.setItem('weeklyMemorization', JSON.stringify(weeklyData));
-      showNotification('Hafalan mingguan berhasil disimpan!');
-    }
-
-    // Hitung statistik
-    function hitungStatistik() {
-      // Hitung statistik berdasarkan checkbox yang dicentang
-      const totalIbadah = document.querySelectorAll('.prayer-checkbox').length;
-      let checkedIbadah = 0;
-      document.querySelectorAll('.prayer-checkbox:checked').forEach(() => {
-        checkedIbadah++;
-      });
-      
-      const totalAktivitas = document.querySelectorAll('.activity-checkbox').length;
-      let checkedAktivitas = 0;
-      document.querySelectorAll('.activity-checkbox:checked').forEach(() => {
-        checkedAktivitas++;
-      });
-      
-      const ibadahPercent = Math.round((checkedIbadah / totalIbadah) * 100);
-      const aktivitasPercent = Math.round((checkedAktivitas / totalAktivitas) * 100);
-      
-      const statistikOutput = document.getElementById('statistikOutput');
-      statistikOutput.innerHTML = `
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Ibadah Wajib & Sunnah</span>
-            <span>${ibadahPercent}%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: ${ibadahPercent}%"></div>
-          </div>
-        </div>
-        
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Aktivitas Pagi & Harian</span>
-            <span>${aktivitasPercent}%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: ${aktivitasPercent}%"></div>
-          </div>
-        </div>
-      `;
-      
-      // Update progress bar di bagian Ibadah
-      document.getElementById('ibadah-progress-value').textContent = `${ibadahPercent}%`;
-      document.getElementById('ibadah-progress-fill').style.width = `${ibadahPercent}%`;
-      
-      showNotification('Statistik berhasil dihitung!');
-    }
-
-    // Ekspor data
-    function exportData() {
-      const exportOutput = document.getElementById('exportOutput');
-      const userName = localStorage.getItem('userName') || 'Sahabat';
-      const lastReflection = localStorage.getItem('lastReflection') || 'Belum ada refleksi';
-      const dailyMemorization = localStorage.getItem('dailyMemorization') || 'Belum ada hafalan';
-      
-      // Get notes
-      let notesText = '';
-      document.querySelectorAll('#daftarCatatan .note-item').forEach((note, index) => {
-        const dateTime = note.querySelector('strong').textContent;
-        const text = note.querySelector('p').textContent;
-        notesText += `${index + 1}. ${dateTime}: ${text}\n`;
-      });
-      
-      if (!notesText) {
-        notesText = 'Belum ada catatan';
-      }
-      
-      const data = `=== DATA SIMPUL ===
-Pengguna: ${userName}
-Tanggal: ${new Date().toLocaleDateString()}
-
---- Refleksi Terakhir ---
-${lastReflection}
-
---- Hafalan Harian ---
-${dailyMemorization}
-
---- Catatan Penting ---
-${notesText}`;
-      
-      exportOutput.value = data;
-      showNotification('Data siap diekspor!');
-    }
-
-    // Tampilkan tab
-    function showTab(tabName) {
-      // Sembunyikan semua tab
-      document.querySelectorAll('.tab-item').forEach(tab => {
-        tab.classList.remove('active');
-      });
-      
-      // Nonaktifkan semua tombol tab
-      document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active');
-      });
-      
-      // Tampilkan tab yang dipilih
-      document.getElementById(`tab-${tabName}`).classList.add('active');
-      
-      // Aktifkan tombol tab yang dipilih
-      document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
-    }
-
-    // Tampilkan notifikasi
-    function showNotification(message) {
-      // Buat elemen notifikasi
-      const notification = document.createElement('div');
-      notification.textContent = message;
-      notification.classList.add('notification');
-      notification.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--primary);
-        color: white;
-        padding: 15px 25px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
-      `;
-      
-      document.body.appendChild(notification);
-      
-      // Hapus notifikasi setelah 3 detik
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
-    }
-
-    // Generate calendar
-    function generateCalendar() {
-      const container = document.getElementById('kalenderContainer');
-      container.innerHTML = '';
-      
-      const daysInMonth = 30; // Contoh bulan dengan 30 hari
-      const today = new Date().getDate();
-      
-      for (let i = 1; i <= daysInMonth; i++) {
-        const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day';
-        dayElement.innerHTML = `
-          <div class="day-number">${i}</div>
-          <div class="day-content">${i === today ? '<i class="fas fa-star" style="color: gold;"></i> Hari ini' : ''}</div>
-        `;
-        container.appendChild(dayElement);
-      }
-    }
-
-    // Initialize the app
-    document.addEventListener('DOMContentLoaded', function() {
-      // Load saved name
-      const savedName = localStorage.getItem('userName');
-      if (savedName) {
-        document.getElementById('userName').textContent = savedName;
-        document.getElementById('inputNama').value = savedName;
-      }
-      
-      // Load saved mode
-      const savedMode = localStorage.getItem('userMode');
-      if (savedMode) {
-        setMode(savedMode);
-      } else {
-        updateActivities('default');
-      }
-      
-      // Load saved reflection
-      const savedReflection = localStorage.getItem('lastReflection');
-      if (savedReflection) {
-        document.getElementById('lastRefleksi').innerHTML = `
-          <strong><i class="fas fa-history"></i> Refleksi Terakhir:</strong>
-          <p>${savedReflection}</p>
-        `;
-      }
-      
-      // Load daily memorization
-      const dailyMemorization = localStorage.getItem('dailyMemorization');
-      if (dailyMemorization) {
-        document.getElementById('hafalanInput').value = dailyMemorization;
-      }
-      
-      // Load weekly memorization
-      const weeklyMemorization = JSON.parse(localStorage.getItem('weeklyMemorization') || '{}');
-      Object.keys(weeklyMemorization).forEach(day => {
-        const input = document.getElementById(`hafalan-${day}`);
-        if (input) {
-          input.value = weeklyMemorization[day];
+        /**
+         * Helper function to save data to localStorage
+         * @param {string} key - The key for localStorage
+         * @param {any} data - The data to save
+         */
+        function saveToLocalStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (e) {
+                console.error("Error saving to localStorage", e);
+            }
         }
-      });
-      
-      // Load partner data
-      const savedPartnerData = localStorage.getItem('partnerData');
-      if (savedPartnerData) {
-        partnerData = JSON.parse(savedPartnerData);
-        updatePendingTasks();
-        
-        // Update partner names
-        if (partnerData.pasangan.name !== "Belum Terhubung") {
-          document.querySelector('.partner-card:first-child h3').textContent = partnerData.pasangan.name;
+
+        /**
+         * Helper function to load data from localStorage
+         * @param {string} key - The key for localStorage
+         * @param {any} defaultValue - The default value if data is not found
+         * @returns {any} - The loaded data or default value
+         */
+        function loadFromLocalStorage(key, defaultValue) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch (e) {
+                console.error("Error loading from localStorage", e);
+                return defaultValue;
+            }
         }
-        if (partnerData.profesional.name !== "Belum Terhubung") {
-          document.querySelector('.partner-card:last-child h3').textContent = partnerData.profesional.name;
+
+        /**
+         * Fungsi untuk menyembunyikan modal jika nama dan mode sudah diatur.
+         * Ini adalah inti dari perilaku "flash screen" Anda.
+         */
+        function checkAndHideModal() {
+            if (isNameSet && isModeSet) {
+                initialModalOverlay.classList.add('hidden-modal');
+                // Hapus elemen modal setelah transisi selesai untuk membersihkan DOM
+                initialModalOverlay.addEventListener('transitionend', () => {
+                    initialModalOverlay.style.display = 'none';
+                }, { once: true });
+            }
         }
-      }
-      
-      // Generate calendar
-      generateCalendar();
-      
-      // Set initial tab
-      showTab('tracker');
-      
-      // Add event listeners for checkboxes to update progress
-      document.querySelectorAll('.prayer-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', hitungStatistik);
-      });
-      
-      // Hitung statistik awal
-      hitungStatistik();
-    });
-  </script>
+
+        /**
+         * Menyimpan nama pengguna dan memperbarui tampilan.
+         */
+        function simpanNama() {
+            const inputNama = document.getElementById('inputNama');
+            const userNameSpan = document.getElementById('userName');
+            const nama = inputNama.value.trim();
+
+            if (nama) {
+                userNameSpan.textContent = nama;
+                saveToLocalStorage('userName', nama); // Save to localStorage
+                isNameSet = true;
+                checkAndHideModal(); // Cek dan sembunyikan modal
+            } else {
+                displayMessage("Nama tidak boleh kosong!", "warning");
+            }
+        }
+
+        /**
+         * Mengatur mode aplikasi dan memperbarui tampilan.
+         * @param {string} mode - Mode yang dipilih ('muslimah', 'dosen', dll.).
+         */
+        function setMode(mode) {
+            const body = document.body;
+            const currentModeSpan = document.getElementById('currentMode');
+            const motivasiText = document.getElementById('motivasiText');
+            
+            // Hapus semua kelas mode yang ada
+            body.className = body.className.split(' ').filter(c => !c.startsWith('mode-')).join(' ');
+            
+            // Tambahkan kelas mode yang baru
+            body.classList.add(`mode-${mode}`);
+            currentModeSpan.textContent = mode.charAt(0).toUpperCase() + mode.slice(1); // Kapitalisasi huruf pertama
+            saveToLocalStorage('appMode', mode); // Save to localStorage
+
+            // Update motivasi text based on mode (contoh sederhana)
+            const motivasi = {
+                muslimah: "Jadilah muslimah yang senantiasa menjaga kehormatan dan menebar kebaikan.",
+                dosen: "Ilmu yang bermanfaat adalah sedekah jariyah. Teruslah berkarya!",
+                mahasiswa: "Tuntutlah ilmu sampai ke negeri Cina. Semangat belajar!",
+                freelancer: "Kreativitas tanpa batas, rezeki dari arah tak terduga. Teruslah berinovasi!",
+                pengangguran: "Setiap usaha adalah langkah menuju keberhasilan. Jangan menyerah, terus produktif!",
+                default: "Sebaik-baik manusia adalah yang paling bermanfaat bagi manusia lainnya."
+            };
+            motivasiText.textContent = motivasi[mode] || motivasi.default;
+
+            renderAktivitas(mode); // Render aktivitas sesuai mode
+            isModeSet = true;
+            checkAndHideModal(); // Cek dan sembunyikan modal
+        }
+
+        /**
+         * Merender daftar aktivitas berdasarkan mode yang dipilih.
+         * @param {string} mode - Mode yang dipilih.
+         */
+        function renderAktivitas(mode) {
+            const aktivitasContainer = document.getElementById('aktivitasContainer');
+            aktivitasContainer.innerHTML = ''; // Bersihkan aktivitas sebelumnya
+
+            const selectedActivities = activitiesByMode[mode] || activitiesByMode.default;
+            const savedActivities = loadFromLocalStorage('dailyActivities', {});
+
+            selectedActivities.forEach(activity => {
+                const label = document.createElement('label');
+                const isChecked = savedActivities[activity.id] || false;
+                label.innerHTML = `<input type="checkbox" class="aktivitas-checkbox" data-activity="${activity.id}" ${isChecked ? 'checked' : ''}> <i class="${activity.icon}"></i> ${activity.text}`;
+                aktivitasContainer.appendChild(label);
+
+                // Add event listener to save state on change
+                label.querySelector('.aktivitas-checkbox').addEventListener('change', (event) => {
+                    savedActivities[activity.id] = event.target.checked;
+                    saveToLocalStorage('dailyActivities', savedActivities);
+                });
+            });
+        }
+
+        /**
+         * Menampilkan pesan kustom di UI (pengganti alert()).
+         * @param {string} message - Pesan yang akan ditampilkan.
+         * @param {string} type - Tipe pesan (e.g., 'info', 'warning', 'success').
+         */
+        function displayMessage(message, type = 'info') {
+            const messageBox = document.createElement('div');
+            messageBox.textContent = message;
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                animation: slideIn 0.5s forwards, fadeOut 3s forwards 2s;
+            `;
+
+            switch (type) {
+                case 'warning':
+                    messageBox.style.backgroundColor = '#ffc107';
+                    messageBox.style.color = '#333';
+                    break;
+                case 'success':
+                    messageBox.style.backgroundColor = '#28a745';
+                    break;
+                case 'error':
+                    messageBox.style.backgroundColor = '#dc3545';
+                    break;
+                default:
+                    messageBox.style.backgroundColor = '#007bff';
+            }
+
+            document.body.appendChild(messageBox);
+
+            setTimeout(() => {
+                messageBox.remove();
+            }, 5000); // Hapus pesan setelah 5 detik
+        }
+
+        // Fungsi untuk menambahkan catatan terjadwal
+        function tambahCatatanTerjadwal() {
+            const catatanInput = document.getElementById('catatanInput');
+            const catatanTanggal = document.getElementById('catatanTanggal');
+            const catatanJam = document.getElementById('catatanJam');
+            const daftarCatatan = document.getElementById('daftarCatatan');
+            const bagikanCatatan = document.getElementById('bagikanCatatan').checked;
+
+            const catatanText = catatanInput.value.trim();
+            const tanggal = catatanTanggal.value;
+            const jam = catatanJam.value;
+
+            if (catatanText === '') {
+                displayMessage("Catatan tidak boleh kosong!", "warning");
+                return;
+            }
+
+            const newNote = {
+                id: Date.now(), // Unique ID for each note
+                text: catatanText,
+                tanggal: tanggal,
+                jam: jam,
+                dibagikan: bagikanCatatan
+            };
+
+            let notes = loadFromLocalStorage('notes', []);
+            notes.push(newNote);
+            saveToLocalStorage('notes', notes); // Save notes to localStorage
+            
+            renderNotes(); // Re-render notes to show the new one
+
+            catatanInput.value = '';
+            catatanTanggal.value = '';
+            catatanJam.value = '';
+            document.getElementById('bagikanCatatan').checked = false;
+            displayMessage("Catatan berhasil ditambahkan!", "success");
+        }
+
+        // Fungsi untuk menghapus catatan
+        function hapusCatatan(button) {
+            const noteId = parseInt(button.closest('.note-item').dataset.id);
+            let notes = loadFromLocalStorage('notes', []);
+            notes = notes.filter(note => note.id !== noteId);
+            saveToLocalStorage('notes', notes); // Save updated notes to localStorage
+            renderNotes(); // Re-render notes
+            displayMessage("Catatan berhasil dihapus!", "info");
+        }
+
+        // Fungsi untuk merender catatan dari localStorage
+        function renderNotes() {
+            const daftarCatatan = document.getElementById('daftarCatatan');
+            daftarCatatan.innerHTML = ''; // Clear existing notes
+
+            const notes = loadFromLocalStorage('notes', []);
+            notes.forEach(note => {
+                const listItem = document.createElement('li');
+                listItem.className = 'note-item';
+                listItem.dataset.id = note.id; // Store ID for deletion
+                listItem.innerHTML = `
+                    <strong>${note.text}</strong>
+                    <p class="task-date">${note.tanggal} ${note.jam} ${note.dibagikan ? '<i class="fas fa-share-alt" title="Dibagikan"></i>' : ''}</p>
+                    <div class="task-status ${new Date(`${note.tanggal}T${note.jam}`).getTime() < Date.now() ? 'late' : 'pending'}">
+                        ${new Date(`${note.tanggal}T${note.jam}`).getTime() < Date.now() ? 'Terlambat' : 'Pending'}
+                    </div>
+                    <button onclick="hapusCatatan(this)" style="background: #dc3545; padding: 5px 10px; border-radius: 5px; position: absolute; top: 10px; right: 10px;"><i class="fas fa-trash-alt"></i></button>
+                `;
+                daftarCatatan.appendChild(listItem);
+            });
+        }
+
+
+        // Fungsi untuk mengupdate progress ibadah
+        function updateIbadahProgress() {
+            const checkboxes = document.querySelectorAll('.prayer-checkbox');
+            let checkedCount = 0;
+            const prayerStates = {};
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    checkedCount++;
+                }
+                prayerStates[cb.dataset.prayer] = cb.checked;
+            });
+            const progress = (checkedCount / checkboxes.length) * 100;
+            document.getElementById('ibadah-progress-value').textContent = `${Math.round(progress)}%`;
+            document.getElementById('ibadah-progress-fill').style.width = `${progress}%`;
+            saveToLocalStorage('prayerStates', prayerStates); // Save prayer states
+        }
+
+        // Fungsi untuk memuat status ibadah
+        function loadPrayerStates() {
+            const savedPrayerStates = loadFromLocalStorage('prayerStates', {});
+            document.querySelectorAll('.prayer-checkbox').forEach(cb => {
+                if (savedPrayerStates[cb.dataset.prayer]) {
+                    cb.checked = true;
+                } else {
+                    cb.checked = false;
+                }
+            });
+            updateIbadahProgress(); // Update progress bar after loading
+        }
+
+        // Event listener untuk checkbox ibadah
+        document.querySelectorAll('.prayer-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateIbadahProgress);
+        });
+
+        // Fungsi untuk menyimpan hafalan harian
+        function simpanHafalan() {
+            const hafalanInput = document.getElementById('hafalanInput');
+            const hafalanText = hafalanInput.value.trim();
+            if (hafalanText) {
+                saveToLocalStorage('dailyHafalan', hafalanText); // Save daily hafalan
+                displayMessage(`Hafalan "${hafalanText}" hari ini berhasil disimpan!`, "success");
+                hafalanInput.value = '';
+            } else {
+                displayMessage("Hafalan tidak boleh kosong!", "warning");
+            }
+        }
+
+        // Fungsi untuk memuat hafalan harian
+        function loadDailyHafalan() {
+            const savedHafalan = loadFromLocalStorage('dailyHafalan', '');
+            document.getElementById('hafalanInput').value = savedHafalan;
+        }
+
+        // Fungsi untuk menyimpan refleksi
+        function simpanRefleksi() {
+            const refleksiInput = document.getElementById('refleksiInput');
+            const refleksiText = refleksiInput.value.trim();
+            if (refleksiText) {
+                const now = new Date();
+                const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const reflectionData = { text: refleksiText, date: dateString };
+                saveToLocalStorage('lastReflection', reflectionData); // Save reflection
+                renderLastReflection(); // Re-render last reflection
+                displayMessage("Refleksi berhasil disimpan!", "success");
+                refleksiInput.value = '';
+            } else {
+                displayMessage("Refleksi tidak boleh kosong!", "warning");
+            }
+        }
+
+        // Fungsi untuk merender refleksi terakhir
+        function renderLastReflection() {
+            const lastRefleksiDiv = document.getElementById('lastRefleksi');
+            const savedReflection = loadFromLocalStorage('lastReflection', null);
+            if (savedReflection) {
+                lastRefleksiDiv.innerHTML = `<strong>Refleksi Terakhir (${savedReflection.date}):</strong><p>${savedReflection.text}</p>`;
+            } else {
+                lastRefleksiDiv.innerHTML = `<em>Belum ada refleksi tersimpan.</em>`;
+            }
+        }
+
+
+        /**
+         * Fungsi untuk mengganti tab atau menggulir ke kalender utama.
+         * @param {string} tabId - ID tab yang akan ditampilkan atau 'kalender' untuk menggulir.
+         */
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            if (tabId === 'kalender') {
+                // Gulir ke bagian kalender kolaboratif utama
+                collaborationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Tandai tombol kalender sebagai aktif
+                document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+            } else {
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+                document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+            }
+        }
+
+        /**
+         * Fungsi untuk menggulir ke bagian kolaborasi (digunakan oleh link di tab kalender).
+         */
+        function scrollToCollaboration() {
+            collaborationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+
+        // Fungsi untuk menyimpan hafalan mingguan
+        function simpanHafalanMingguan() {
+            const hafalanData = {};
+            const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'ahad'];
+            days.forEach(day => {
+                hafalanData[day] = document.getElementById(`hafalan-${day}`).value.trim();
+            });
+            saveToLocalStorage('weeklyHafalan', hafalanData); // Save weekly hafalan
+            console.log("Hafalan Mingguan Disimpan:", hafalanData);
+            displayMessage("Hafalan mingguan berhasil disimpan!", "success");
+        }
+
+        // Fungsi untuk memuat hafalan mingguan
+        function loadWeeklyHafalan() {
+            const savedHafalanData = loadFromLocalStorage('weeklyHafalan', {});
+            const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'ahad'];
+            days.forEach(day => {
+                const inputElement = document.getElementById(`hafalan-${day}`);
+                if (inputElement) {
+                    inputElement.value = savedHafalanData[day] || '';
+                }
+            });
+        }
+
+        // Fungsi untuk menghitung statistik (contoh sederhana)
+        function hitungStatistik() {
+            const statistikOutput = document.getElementById('statistikOutput');
+            
+            // Statistik Ibadah
+            const prayerStates = loadFromLocalStorage('prayerStates', {});
+            let completedPrayers = Object.values(prayerStates).filter(status => status).length;
+            const totalPrayers = Object.keys(prayerStates).length;
+
+            // Statistik Catatan
+            const notes = loadFromLocalStorage('notes', []);
+            const activeNotes = notes.length;
+            const pendingNotes = notes.filter(note => new Date(`${note.tanggal}T${note.jam}`).getTime() >= Date.now()).length;
+            const lateNotes = notes.filter(note => new Date(`${note.tanggal}T${note.jam}`).getTime() < Date.now()).length;
+
+            // Statistik Hafalan Mingguan (contoh sederhana)
+            const weeklyHafalan = loadFromLocalStorage('weeklyHafalan', {});
+            let filledHafalanDays = Object.values(weeklyHafalan).filter(text => text.length > 0).length;
+            const totalHafalanDays = Object.keys(weeklyHafalan).length;
+
+
+            statistikOutput.innerHTML = `
+                <p><strong>Statistik Ibadah:</strong> ${completedPrayers} dari ${totalPrayers} ibadah wajib/sunnah telah diselesaikan.</p>
+                <p><strong>Catatan & Janji:</strong> Total ${activeNotes} catatan, ${pendingNotes} pending, ${lateNotes} terlambat.</p>
+                <p><strong>Hafalan Mingguan:</strong> ${filledHafalanDays} dari ${totalHafalanDays} hari hafalan terisi.</p>
+                <p><em>(Ini adalah statistik dasar. Fitur lebih lanjut bisa ditambahkan.)</em></p>
+            `;
+            displayMessage("Statistik diperbarui!", "info");
+        }
+
+        // Fungsi untuk merender kalender (contoh sederhana)
+        function renderCalendar() {
+            // Menggunakan unifiedCalendarGrid sebagai target render
+            const kalenderContainer = document.getElementById('unifiedCalendarGrid');
+            kalenderContainer.innerHTML = ''; // Bersihkan kalender sebelumnya
+            
+            // Tambahkan header hari
+            const daysOfWeek = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+            daysOfWeek.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                kalenderContainer.appendChild(header);
+            });
+
+            // Mendapatkan tanggal hari ini
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth(); // 0-indexed
+
+            // Mendapatkan jumlah hari dalam bulan ini
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            // Mendapatkan hari pertama bulan ini (0=Minggu, 1=Senin...)
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+            // Sesuaikan firstDayOfMonth agar Senin adalah 0, Minggu adalah 6
+            const adjustedFirstDay = (firstDayOfMonth === 0) ? 6 : firstDayOfMonth - 1;
+
+            // Load notes for calendar events
+            const notes = loadFromLocalStorage('notes', []);
+
+            // Tambahkan sel kosong untuk menggeser hari pertama ke posisi yang benar
+            for (let i = 0; i < adjustedFirstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day-cell';
+                kalenderContainer.appendChild(emptyCell);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day-cell';
+                dayCell.innerHTML = `<div class="day-number">${i}</div><div class="day-content"></div>`;
+
+                // Add events to calendar cells
+                const dayNotes = notes.filter(note => {
+                    const noteDate = new Date(note.tanggal);
+                    return noteDate.getDate() === i &&
+                           noteDate.getMonth() === currentMonth &&
+                           noteDate.getFullYear() === currentYear;
+                });
+
+                dayNotes.forEach(note => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = `calendar-event ${note.dibagikan ? 'partner' : ''}`;
+                    eventDiv.textContent = note.text;
+                    dayCell.querySelector('.day-content').appendChild(eventDiv);
+                });
+
+                kalenderContainer.appendChild(dayCell);
+            }
+        }
+
+        // Fungsi untuk ekspor data
+        function exportData() {
+            const exportOutput = document.getElementById('exportOutput');
+            let data = "--- Data SIMPUL Harian ---\n\n";
+
+            data += `Nama Pengguna: ${loadFromLocalStorage('userName', 'Sahabat')}\n`;
+            data += `Mode Aktif: ${loadFromLocalStorage('appMode', 'Default').charAt(0).toUpperCase() + loadFromLocalStorage('appMode', 'Default').slice(1)}\n\n`;
+
+            data += "Aktivitas Harian:\n";
+            const currentMode = loadFromLocalStorage('appMode', 'default');
+            const selectedActivities = activitiesByMode[currentMode] || activitiesByMode.default;
+            const savedActivities = loadFromLocalStorage('dailyActivities', {});
+            selectedActivities.forEach(activity => {
+                data += `- ${activity.text}: ${savedActivities[activity.id] ? 'Selesai' : 'Belum'}\n`;
+            });
+            data += "\n";
+
+            data += "Ibadah:\n";
+            const prayerStates = loadFromLocalStorage('prayerStates', {});
+            document.querySelectorAll('.prayer-checkbox').forEach(cb => {
+                data += `- ${cb.nextSibling.textContent.trim()}: ${prayerStates[cb.dataset.prayer] ? 'Selesai' : 'Belum'}\n`;
+            });
+            data += `Progress Ibadah: ${document.getElementById('ibadah-progress-value').textContent}\n\n`;
+
+            data += "Catatan Penting & Janji:\n";
+            const notes = loadFromLocalStorage('notes', []);
+            if (notes.length > 0) {
+                notes.forEach((note, index) => {
+                    data += `${index + 1}. ${note.text} (${note.tanggal} ${note.jam}) ${note.dibagikan ? '(Dibagikan)' : ''}\n`;
+                });
+            } else {
+                data += "Tidak ada catatan tersimpan.\n";
+            }
+            data += "\n";
+
+            data += "Hafalan Hari Ini: " + (loadFromLocalStorage('dailyHafalan', 'Belum diisi')) + "\n\n";
+            
+            const savedReflection = loadFromLocalStorage('lastReflection', null);
+            data += "Refleksi Terakhir:\n" + (savedReflection ? `(${savedReflection.date}): ${savedReflection.text}` : "Belum ada refleksi.") + "\n\n";
+
+            data += "Hafalan Mingguan:\n";
+            const weeklyHafalan = loadFromLocalStorage('weeklyHafalan', {});
+            const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'ahad'];
+            days.forEach(day => {
+                data += `- ${day.charAt(0).toUpperCase() + day.slice(1)}: ${weeklyHafalan[day] || 'Belum diisi'}\n`;
+            });
+            data += "\n";
+
+
+            exportOutput.value = data;
+            displayMessage("Data siap diekspor. Silakan salin atau unduh.", "info");
+
+            // Untuk mengunduh sebagai file teks
+            const blob = new Blob([data], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data_simpul_harian.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Fungsi untuk mengatur peran (Pasangan/Profesional)
+        function setRole(role) {
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.role-btn[onclick="setRole('${role}')"]`).classList.add('active');
+            saveToLocalStorage('userRole', role); // Save user role
+            displayMessage(`Peran diatur ke: ${role.charAt(0).toUpperCase() + role.slice(1)}`, "info");
+        }
+
+        // Fungsi untuk menghubungkan partner (simulasi)
+        function connectPartner(type) {
+            displayMessage(`Mencoba menghubungkan dengan partner ${type}... (Fitur ini memerlukan backend)`, "info");
+            // Di sini akan ada logika untuk koneksi real-time dengan backend (misal: Firebase)
+        }
+
+        // --- THREE.JS ANIMATION FOR HAFALAN ICON ---
+        let sceneHafalan, cameraHafalan, rendererHafalan, cubeHafalan;
+        let isHoveringHafalan = false;
+        let originalColorHafalan = 0x4cc9f0; // Warna default (biru muda)
+        let hoverColorHafalan = 0xf72585; // Warna saat hover (pink)
+
+        function initHafalan3DIcon() {
+            const container = document.getElementById('hafalan3dIconContainer');
+            const canvas = document.getElementById('hafalan3dIcon');
+
+            // Set canvas size based on container
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            // Scene
+            sceneHafalan = new THREE.Scene();
+
+            // Camera
+            cameraHafalan = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            cameraHafalan.position.z = 1.5; // Mundurkan kamera agar kubus terlihat
+
+            // Renderer
+            rendererHafalan = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            rendererHafalan.setSize(width, height);
+            rendererHafalan.setPixelRatio(window.devicePixelRatio);
+
+            // Geometry (Kubus sederhana)
+            const geometry = new THREE.BoxGeometry(1, 1, 1); // Ukuran kubus
+
+            // Material
+            const material = new THREE.MeshBasicMaterial({ color: originalColorHafalan }); // Warna awal
+            cubeHafalan = new THREE.Mesh(geometry, material);
+            sceneHafalan.add(cubeHafalan);
+
+            // Interaksi Hover
+            container.addEventListener('mouseenter', () => {
+                isHoveringHafalan = true;
+                cubeHafalan.material.color.set(hoverColorHafalan); // Ubah warna saat hover
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isHoveringHafalan = false;
+                cubeHafalan.material.color.set(originalColorHafalan); // Kembalikan warna saat tidak hover
+            });
+
+            // Resizing handler
+            window.addEventListener('resize', () => {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                cameraHafalan.aspect = newWidth / newHeight;
+                cameraHafalan.updateProjectionMatrix();
+                rendererHafalan.setSize(newWidth, newHeight);
+            });
+        }
+
+        function animateHafalan3DIcon() {
+            requestAnimationFrame(animateHafalan3DIcon);
+
+            // Rotasi kubus
+            cubeHafalan.rotation.x += 0.005;
+            cubeHafalan.rotation.y += 0.005;
+
+            // Efek tambahan saat hover
+            if (isHoveringHafalan) {
+                cubeHafalan.rotation.x += 0.02; // Rotasi lebih cepat saat hover
+                cubeHafalan.rotation.y += 0.02;
+                cubeHafalan.scale.set(1.1, 1.1, 1.1); // Sedikit membesar
+            } else {
+                cubeHafalan.scale.set(1, 1, 1); // Kembali ke ukuran normal
+            }
+
+            rendererHafalan.render(sceneHafalan, cameraHafalan);
+        }
+        // --- END THREE.JS ANIMATION ---
+
+        // --- THREE.JS ANIMATION FOR AKTIVITAS ICON ---
+        let sceneAktivitas, cameraAktivitas, rendererAktivitas, sphereAktivitas;
+        let isHoveringAktivitas = false;
+        let originalColorAktivitas = 0x4cc9f0; // Warna default (biru muda)
+        let hoverColorAktivitas = 0x28a745; // Warna saat hover (hijau)
+
+        function initAktivitas3DIcon() {
+            const container = document.getElementById('aktivitas3dIconContainer');
+            const canvas = document.getElementById('aktivitas3dIcon');
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            sceneAktivitas = new THREE.Scene();
+            cameraAktivitas = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            cameraAktivitas.position.z = 1.5;
+
+            rendererAktivitas = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            rendererAktivitas.setSize(width, height);
+            rendererAktivitas.setPixelRatio(window.devicePixelRatio);
+
+            const geometry = new THREE.SphereGeometry(0.7, 32, 32); // Bentuk bola
+            const material = new THREE.MeshBasicMaterial({ color: originalColorAktivitas });
+            sphereAktivitas = new THREE.Mesh(geometry, material);
+            sceneAktivitas.add(sphereAktivitas);
+
+            container.addEventListener('mouseenter', () => {
+                isHoveringAktivitas = true;
+                sphereAktivitas.material.color.set(hoverColorAktivitas);
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isHoveringAktivitas = false;
+                sphereAktivitas.material.color.set(originalColorAktivitas);
+            });
+
+            window.addEventListener('resize', () => {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                cameraAktivitas.aspect = newWidth / newHeight;
+                cameraAktivitas.updateProjectionMatrix();
+                rendererAktivitas.setSize(newWidth, newHeight);
+            });
+        }
+
+        function animateAktivitas3DIcon() {
+            requestAnimationFrame(animateAktivitas3DIcon);
+
+            sphereAktivitas.rotation.x += 0.005;
+            sphereAktivitas.rotation.y += 0.005;
+
+            if (isHoveringAktivitas) {
+                sphereAktivitas.rotation.x += 0.02;
+                sphereAktivitas.rotation.y += 0.02;
+                sphereAktivitas.scale.set(1.1, 1.1, 1.1);
+            } else {
+                sphereAktivitas.scale.set(1, 1, 1);
+            }
+
+            rendererAktivitas.render(sceneAktivitas, cameraAktivitas);
+        }
+        // --- END THREE.JS ANIMATION FOR AKTIVITAS ICON ---
+
+
+        // --- DAILY WEATHER FEATURE ---
+        const weatherConditions = [
+            { text: "Cerah", icon: "fas fa-sun", color: "#FFD700" },
+            { text: "Berawan", icon: "fas fa-cloud-sun", color: "#87CEEB" },
+            { text: "Hujan", icon: "fas fa-cloud-showers-heavy", color: "#4682B4" },
+            { text: "Badai", icon: "fas fa-bolt", color: "#DAA520" },
+            { text: "Berkabut", icon: "fas fa-smog", color: "#A9A9A9" }
+        ];
+
+        function getWeather() {
+            const weatherIcon = document.getElementById('weatherIcon');
+            const weatherCondition = document.getElementById('weatherCondition');
+            const locationInfo = document.getElementById('locationInfo');
+
+            weatherIcon.className = "fas fa-spinner fa-spin";
+            weatherIcon.style.color = "var(--accent)";
+            weatherCondition.textContent = "Memuat cuaca...";
+            locationInfo.textContent = "Mencari lokasi...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        locationInfo.textContent = `Lokasi Anda: Lat ${lat.toFixed(2)}, Lon ${lon.toFixed(2)}`;
+
+                        // Simulate weather based on a random choice
+                        const randomIndex = Math.floor(Math.random() * weatherConditions.length);
+                        const selectedWeather = weatherConditions[randomIndex];
+
+                        weatherIcon.className = selectedWeather.icon;
+                        weatherIcon.style.color = selectedWeather.color;
+                        weatherCondition.textContent = selectedWeather.text;
+                        displayMessage(`Cuaca diperbarui: ${selectedWeather.text}`, "success");
+                    },
+                    (error) => {
+                        // Log the full error object for better debugging
+                        console.error("Error getting location:", error); 
+                        let errorMessage = "Tidak dapat mengambil lokasi Anda.";
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage += " Izinkan akses lokasi di browser Anda.";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage += " Informasi lokasi tidak tersedia.";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage += " Waktu habis saat mencari lokasi.";
+                                break;
+                            default: // Tambahkan kasus default untuk error yang tidak diketahui
+                                errorMessage += ` Kode error: ${error.code || 'Tidak diketahui'}.`;
+                        }
+                        locationInfo.textContent = errorMessage;
+                        weatherIcon.className = "fas fa-exclamation-triangle";
+                        weatherIcon.style.color = "var(--warning)";
+                        weatherCondition.textContent = "Gagal memuat cuaca";
+                        displayMessage(errorMessage, "error");
+
+                        // Fallback to simulated weather if location fails
+                        const randomIndex = Math.floor(Math.random() * weatherConditions.length);
+                        const selectedWeather = weatherConditions[randomIndex];
+                        weatherIcon.className = selectedWeather.icon;
+                        weatherIcon.style.color = selectedWeather.color;
+                        weatherCondition.textContent = selectedWeather.text;
+                    }
+                );
+            } else {
+                locationInfo.textContent = "Geolocation tidak didukung oleh browser Anda.";
+                weatherIcon.className = "fas fa-exclamation-circle";
+                weatherIcon.style.color = "var(--warning)";
+                weatherCondition.textContent = "Gagal memuat cuaca";
+                displayMessage("Geolocation tidak didukung oleh browser Anda.", "error");
+
+                // Fallback to simulated weather
+                const randomIndex = Math.floor(Math.random() * weatherConditions.length);
+                const selectedWeather = weatherConditions[randomIndex];
+                weatherIcon.className = selectedWeather.icon;
+                weatherIcon.style.color = selectedWeather.color;
+                weatherCondition.textContent = selectedWeather.text;
+            }
+        }
+        // --- END DAILY WEATHER FEATURE ---
+
+        // --- PRAYER TIMES FEATURE (SIMULATED FOR BANDA ACEH) ---
+        function displayPrayerTimes() {
+            const prayerTimesDisplay = document.getElementById('prayerTimesDisplay');
+            // Simulated prayer times for Banda Aceh (these are not real-time accurate)
+            const prayerTimes = {
+                Fajr: "05:10 AM",
+                Sunrise: "06:20 AM",
+                Dhuhr: "12:45 PM",
+                Asr: "04:00 PM",
+                Maghrib: "06:50 PM",
+                Isha: "08:00 PM"
+            };
+
+            prayerTimesDisplay.innerHTML = ''; // Clear previous times
+
+            for (const prayer in prayerTimes) {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'prayer-time-item';
+                itemDiv.innerHTML = `<strong>${prayer}</strong><span>${prayerTimes[prayer]}</span>`;
+                prayerTimesDisplay.appendChild(itemDiv);
+            }
+        }
+        // --- END PRAYER TIMES FEATURE ---
+
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved data first
+            const savedUserName = loadFromLocalStorage('userName', '');
+            const savedAppMode = loadFromLocalStorage('appMode', 'default');
+            const savedUserRole = loadFromLocalStorage('userRole', 'pasangan'); // Default role
+
+            if (savedUserName) {
+                document.getElementById('inputNama').value = savedUserName;
+                document.getElementById('userName').textContent = savedUserName;
+                isNameSet = true;
+            }
+            if (savedAppMode) {
+                document.body.classList.add(`mode-${savedAppMode}`);
+                document.getElementById('currentMode').textContent = savedAppMode.charAt(0).toUpperCase() + savedAppMode.slice(1);
+                renderAktivitas(savedAppMode); // Render activities based on loaded mode
+                isModeSet = true;
+            } else {
+                renderAktivitas('default'); // Render default activities if no mode saved
+            }
+
+            // Set active role button
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                if (btn.onclick.toString().includes(`setRole('${savedUserRole}')`)) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+
+            loadPrayerStates(); // Load prayer states
+            loadDailyHafalan(); // Load daily hafalan
+            renderLastReflection(); // Render last reflection
+            loadWeeklyHafalan(); // Load weekly hafalan
+            renderNotes(); // Render notes from localStorage
+
+            updateIbadahProgress(); // Update progress ibadah saat dimuat
+            showTab('tracker'); // Tampilkan tab tracker secara default
+            renderCalendar(); // Render kalender utama saat dimuat
+
+            // PWA: Mendaftarkan Service Worker
+            // Catatan: Pendaftaran Service Worker dan manifest.json menggunakan Blob URL
+            // ini adalah workaround untuk lingkungan pratinjau (preview) dan mungkin
+            // tidak berfungsi sepenuhnya seperti pada deployment server sungguhan.
+            // Untuk deployment, pastikan manifest.json dan service-worker.js ada di root.
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    // Get manifest content from the script tag
+                    const manifestScript = document.getElementById('manifest-json');
+                    const manifestContent = manifestScript ? manifestScript.textContent : '{}';
+                    const manifestBlob = new Blob([manifestContent], { type: 'application/json' });
+                    const manifestUrl = URL.createObjectURL(manifestBlob);
+
+                    // Create a minimal service worker script as a Blob URL
+                    const serviceWorkerScriptContent = `
+                        self.addEventListener('install', (event) => {
+                            console.log('Service Worker: Installed.');
+                            self.skipWaiting();
+                        });
+
+                        self.addEventListener('activate', (event) => {
+                            console.log('Service Worker: Activated.');
+                            event.waitUntil(clients.claim());
+                        });
+
+                        self.addEventListener('fetch', (event) => {
+                            // This service worker doesn't do much, just logs fetches.
+                            // In a real PWA, you'd implement caching strategies here.
+                            console.log('Service Worker: Fetching', event.request.url);
+                        });
+                    `;
+                    const swBlob = new Blob([serviceWorkerScriptContent], { type: 'application/javascript' });
+                    const swUrl = URL.createObjectURL(swBlob);
+
+                    // Register the service worker
+                    navigator.serviceWorker.register(swUrl)
+                        .then(registration => {
+                            console.log('Service Worker terdaftar dengan scope:', registration.scope);
+                            // Set the manifest link dynamically
+                            const linkManifest = document.createElement('link');
+                            linkManifest.rel = 'manifest';
+                            linkManifest.href = manifestUrl;
+                            document.head.appendChild(linkManifest);
+                        })
+                        .catch(error => {
+                            console.error('Pendaftaran Service Worker gagal:', error);
+                            // Clean up the object URL if registration fails
+                            URL.revokeObjectURL(swUrl);
+                            URL.revokeObjectURL(manifestUrl);
+                        });
+                });
+            }
+
+            // Tampilkan modal hanya jika nama atau mode belum diatur.
+            // Modal akan menghilang setelah pengguna mengisi nama dan memilih mode hidup.
+            if (!isNameSet || !isModeSet) {
+                initialModalOverlay.classList.remove('hidden-modal');
+            } else {
+                initialModalOverlay.classList.add('hidden-modal'); // Sembunyikan jika sudah diatur
+            }
+
+            // Inisialisasi dan mulai animasi 3D ikon setelah DOM dimuat
+            initHafalan3DIcon();
+            animateHafalan3DIcon();
+            initAktivitas3DIcon(); // Inisialisasi ikon 3D aktivitas
+            animateAktivitas3DIcon(); // Mulai animasi ikon 3D aktivitas
+
+            // Muat cuaca dan jadwal shalat saat aplikasi dimuat
+            getWeather();
+            displayPrayerTimes(); // Tampilkan jadwal shalat
+        });
+
+    </script>
 </body>
 </html>
